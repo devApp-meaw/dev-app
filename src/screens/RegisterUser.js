@@ -1,10 +1,9 @@
 import * as React from "react";
-import { View, Text, Image } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, View, Text, Image } from "react-native";
 
-import { StyleSheet } from "react-native";
-import UserInput from "../components/UserInput";
-import SocialLoginButton from "../components/SocialLoginButton";
 import SimpleButton from "../components/SimpleButton";
+import UserInput from "../components/UserInput";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const RegisterUser = () => {
   const {
@@ -17,8 +16,16 @@ const RegisterUser = () => {
     InputTitleView,
     InputTitleText,
     ImageUploadBox,
+    ImageUploadText,
+    RegistrarView,
+    RegistrarButtonText,
+    RegistrarButton,
+    ImageUploadIcon,
   } = styles;
   return (
+    
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
     <View style={container}>
       <View style={AlertView}>
         <Text style={AlertText}>
@@ -28,7 +35,7 @@ const RegisterUser = () => {
         após a formalização do processo.
         </Text>
       </View>
-      <View style={HiddenView}>
+      <View>
         <View style={InputTitleView}>
             <Text style={InputTitleText}> INFORMAÇÕES PESSOAIS
             </Text>
@@ -99,10 +106,21 @@ const RegisterUser = () => {
         <Text style={InputTitleText}> FOTO DE PERFIL
         </Text>
         <View style={ImageUploadBox}>
-
+            <Icon name="plus-circle" style={ImageUploadIcon} />
+            <Text style={ImageUploadText}>adicionar foto</Text>
         </View>
       </View>
+      
+      <View style={RegistrarView}>
+        <SimpleButton
+          text={"Registrar"}
+          stylesButton={[StandardButton, RegistrarButton]}
+          stylesText={RegistrarButtonText}
+        />
+      </View>
     </View>
+    </ScrollView>
+  </SafeAreaView>
   );
 };
 
@@ -111,6 +129,18 @@ const styles = StyleSheet.create({
   inputArea: {
     flexDirection: "column",
     gap: 20,
+  },
+  RegistrarButtonText: {
+    fontSize: 12,
+    color: "#434343",
+  },
+  RegistrarButton: {
+    backgroundColor: "#88c9bf",
+  },
+  RegistrarView: {
+    marginTop: 52,
+    marginBottom: 52,
+    alignItems: "center",
   },
   StandardButton: {
     alignItems: "center",
@@ -160,7 +190,18 @@ const styles = StyleSheet.create({
     height: 128,
     width: 128,
     borderRadius: 2,
+    alignItems: "center",
+    textAlignVertical: "center",
+    paddingTop: 42,
   },
+  ImageUploadIcon: {
+    color: "#757575",
+    fontSize: 22,
+  },
+  ImageUploadText: {
+    fontSize: 14,
+    color: "#757575",
+  }
 });
 
 export default RegisterUser;
