@@ -1,10 +1,8 @@
 import * as React from "react";
-import { View, Text, Image } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, View, Text, Image } from "react-native";
 
-import { StyleSheet } from "react-native";
-import UserInput from "../components/UserInput";
-import SocialLoginButton from "../components/SocialLoginButton";
 import SimpleButton from "../components/SimpleButton";
+import UserInput from "../components/UserInput";
 
 const RegisterUser = () => {
   const {
@@ -17,8 +15,14 @@ const RegisterUser = () => {
     InputTitleView,
     InputTitleText,
     ImageUploadBox,
+    RegistrarView,
+    RegistrarButtonText,
+    RegistrarButton,
   } = styles;
   return (
+    
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
     <View style={container}>
       <View style={AlertView}>
         <Text style={AlertText}>
@@ -28,7 +32,7 @@ const RegisterUser = () => {
         após a formalização do processo.
         </Text>
       </View>
-      <View style={HiddenView}>
+      <View>
         <View style={InputTitleView}>
             <Text style={InputTitleText}> INFORMAÇÕES PESSOAIS
             </Text>
@@ -102,7 +106,17 @@ const RegisterUser = () => {
 
         </View>
       </View>
+      
+      <View style={RegistrarView}>
+        <SimpleButton
+          text={"Registrar"}
+          stylesButton={[StandardButton, RegistrarButton]}
+          stylesText={RegistrarButtonText}
+        />
+      </View>
     </View>
+    </ScrollView>
+  </SafeAreaView>
   );
 };
 
@@ -111,6 +125,18 @@ const styles = StyleSheet.create({
   inputArea: {
     flexDirection: "column",
     gap: 20,
+  },
+  RegistrarButtonText: {
+    fontSize: 12,
+    color: "#434343",
+  },
+  RegistrarButton: {
+    backgroundColor: "#88c9bf",
+  },
+  RegistrarView: {
+    marginTop: 52,
+    marginBottom: 52,
+    alignItems: "center",
   },
   StandardButton: {
     alignItems: "center",
