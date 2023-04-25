@@ -3,6 +3,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 
 import Login from "./src/screens/Login";
+import AnimalRegistration from "./src/screens/AnimalRegistration";
+import { Provider as PaperProvider } from "react-native-paper";
 import RegisterUser from "./src/screens/RegisterUser";
 import FrontPage from "./src/screens/FrontPage";
 import LoadingPage from "./src/screens/LoadingPage";
@@ -88,9 +90,27 @@ const App = () => {
               fontSize: 20,
             },
           }}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
+        >
+          <Drawer.Screen
+            name='ANIMAL REGISTRATION'
+            component={AnimalRegistration}
+            options={{
+              title: "ANIMAL REGISTRATION",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#cfe9e5",
+                height: 56,
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+            }}
+          />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
