@@ -67,12 +67,12 @@ const styles = StyleSheet.create({
   },
   HeaderTextStyle: {
     color: "#ffd358",
-    fontSize: 100,
+    fontSize: 80,
     fontFamily: "Courgette_400Regular",
   },
-  HeaderStyle: { paddingTop: 40, alignItems: "center" },
+  HeaderStyle: { paddingTop: 20, alignItems: "center" },
   ParagraphText: { color: "#575756", fontSize: 18, textAlign: "center" },
-  ParagraphView: { paddingTop: 52, paddingBottom: 40, paddingHorizontal: 48 },
+  ParagraphView: { paddingTop: 42, paddingBottom: 20, paddingHorizontal: 48 },
   StandardButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -89,10 +89,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffd358",
   },
   AdotarButtonView: {
-    marginTop: 52,
+    marginTop: 22,
     gap: 16,
     alignItems: "center",
-    paddingBottom: 44,
+    paddingBottom: 34,
   },
   AdotarButtonText: {
     fontSize: 12,
