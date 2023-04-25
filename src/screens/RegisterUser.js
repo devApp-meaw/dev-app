@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, ScrollView, View, Text, Image } from "react-n
 
 import SimpleButton from "../components/SimpleButton";
 import UserInput from "../components/UserInput";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const RegisterUser = () => {
   const {
@@ -15,9 +16,11 @@ const RegisterUser = () => {
     InputTitleView,
     InputTitleText,
     ImageUploadBox,
+    ImageUploadText,
     RegistrarView,
     RegistrarButtonText,
     RegistrarButton,
+    ImageUploadIcon,
   } = styles;
   return (
     
@@ -103,7 +106,8 @@ const RegisterUser = () => {
         <Text style={InputTitleText}> FOTO DE PERFIL
         </Text>
         <View style={ImageUploadBox}>
-
+            <Icon name="plus-circle" style={ImageUploadIcon} />
+            <Text style={ImageUploadText}>adicionar foto</Text>
         </View>
       </View>
       
@@ -186,7 +190,18 @@ const styles = StyleSheet.create({
     height: 128,
     width: 128,
     borderRadius: 2,
+    alignItems: "center",
+    textAlignVertical: "center",
+    paddingTop: 42,
   },
+  ImageUploadIcon: {
+    color: "#757575",
+    fontSize: 22,
+  },
+  ImageUploadText: {
+    fontSize: 14,
+    color: "#757575",
+  }
 });
 
 export default RegisterUser;
