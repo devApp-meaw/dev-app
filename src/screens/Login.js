@@ -8,6 +8,7 @@ import SimpleButton from "../components/SimpleButton";
 
 const Login = () => {
   const {
+    container,
     inputArea,
     EntrarButtonText,
     EntrarView,
@@ -18,7 +19,7 @@ const Login = () => {
     FacebookEntrarButton,
   } = styles;
   return (
-    <View>
+    <View style={container}>
       <View style={inputArea}>
         <UserInput
           label={"usuario"}
@@ -55,6 +56,7 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#FAFAFA" },
   inputArea: {
     marginTop: 64,
     flexDirection: "column",
