@@ -1,26 +1,42 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from "react";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>login screen Screen</Text>
-    </View>
-  );
-}
-  
-const Stack = createNativeStackNavigator();
+import Login from "./src/screens/Login";
+import MyStatusBar from "./src/components/MyStatusBar";
 
-function App() {
+const Drawer = createDrawerNavigator();
+
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
+      <MyStatusBar backgroundColor="#88c9bf" barStyle="light-content" />
+      <Drawer.Navigator
+        initialRouteName="Login"
+        screenOptions={{
+          drawerPosition: "left",
+        }}
+      >
+        <Drawer.Screen
+          name="Login"
+          component={Login}
+          options={{
+            title: "Login",
+            headerShadowVisible: true,
+            headerTitleAlign: "left",
+            headerStyle: {
+              backgroundColor: "#cfe9e5",
+              height: 56,
+            },
+            headerTintColor: "#434343",
+            headerTitleStyle: {
+              fontSize: 20,
+            },
+          }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 export default App;
