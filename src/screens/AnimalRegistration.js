@@ -3,9 +3,11 @@ import { View, Text } from "react-native";
 
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import SimpleButton from "../components/SimpleButton";
-import { Checkbox } from "react-native-paper";
+import CheckBox from "@react-native-community/checkbox";
 import UserInput from "../components/UserInput";
 import { Divider, Button } from "react-native-paper";
+import Icon from "react-native-vector-icons/FontAwesome";
+import Checkbox from "expo-checkbox";
 
 const AnimalRegistration = () => {
   const {
@@ -19,8 +21,12 @@ const AnimalRegistration = () => {
     Disabled,
     ButtonSection,
     Images,
+    ImageUploadBox,
+    ImageUploadIcon,
+    ImageUploadText,
   } = styles;
   const [species, setSpecies] = useState(false);
+  const [acompanhamentoBox, setAcompanhamentoBox] = useState(false);
   const [gender, setGender] = useState(false);
   const [size, setSize] = useState(false);
   const [age, setAge] = useState(false);
@@ -28,41 +34,14 @@ const AnimalRegistration = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View>
-          <View style={TextField}>
-            <View style={Row}>
-              <Text>Tenho interesse em cadastrar o animal para:</Text>
-            </View>
+          <View style={styles.HeaderTextView}>
+            <Text style={BigTitle}>Adoção</Text>
           </View>
-          <View style={[ButtonSection]}>
-            <Button
-              mode='contained'
-              onPress={() => console.log("Pressed")}
-              buttonColor='#ffd358'
-            >
-              ADOÇÃO
-            </Button>
-            <Button
-              mode='contained'
-              onPress={() => console.log("Pressed")}
-              buttonColor='#ffd358'
-            >
-              APADRINHAR
-            </Button>
-            <Button
-              mode='contained'
-              onPress={() => console.log("Pressed")}
-              buttonColor='#ffd358'
-            >
-              AJUDA
-            </Button>
-          </View>
-          <Divider />
-          <Text style={BigTitle}>Adoção</Text>
           <View style={TextField}>
             <View style={Row}>
               <Text style={Title}>Nome do animal</Text>
             </View>
-            <View style={Row}>
+            <View style={styles.TextRow}>
               <UserInput
                 label={"Saude"}
                 placeholder={"Nome do animal"}
@@ -74,89 +53,83 @@ const AnimalRegistration = () => {
             <View style={Row}>
               <Text style={Title}>Fotos do animal</Text>
             </View>
-            <View style={Images}>
-              <Text>Adicionar fotos</Text>
+            <View style={ImageUploadBox}>
+              <Icon name="plus-circle" style={ImageUploadIcon} />
+              <Text style={ImageUploadText}>adicionar foto</Text>
             </View>
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Especie</Text>
+              <Text style={Title}>ESPÉCIE</Text>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
-                <Text style={CheckboxText}>Cachoroo</Text>
+                <Text style={CheckboxText}>Cachorro</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
-                <Text style={CheckboxText}>Cachoroo</Text>
+                <Text style={CheckboxText}>Gato</Text>
               </View>
             </View>
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Sexo</Text>
+              <Text style={Title}>SEXO</Text>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Macho</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
-                <Text style={CheckboxText}>Femea</Text>
+                <Text style={CheckboxText}>Fêmea</Text>
               </View>
             </View>
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Porte</Text>
+              <Text style={Title}>PORTE</Text>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Pequeno</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
-                <Text style={CheckboxText}>Medio</Text>
+                <Text style={CheckboxText}>Médio</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Grande</Text>
               </View>
@@ -164,33 +137,30 @@ const AnimalRegistration = () => {
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Idade</Text>
+              <Text style={Title}>IDADE</Text>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Filhote</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Adulto</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Idoso</Text>
               </View>
@@ -198,33 +168,30 @@ const AnimalRegistration = () => {
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Temperamento</Text>
+              <Text style={Title}>TEMPARAMENTO</Text>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Brincalhão</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Tímido</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Calmo</Text>
               </View>
@@ -232,28 +199,25 @@ const AnimalRegistration = () => {
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Guarda</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Amoroso</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Preguiçoso</Text>
               </View>
@@ -261,24 +225,22 @@ const AnimalRegistration = () => {
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Saude</Text>
+              <Text style={Title}>SAÚDE</Text>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Vacinado</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Vermifugado</Text>
               </View>
@@ -286,24 +248,22 @@ const AnimalRegistration = () => {
             <View style={Row}>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Castrado</Text>
               </View>
               <View style={CheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Doente</Text>
               </View>
             </View>
-            <View style={Row}>
+            <View style={styles.TextRow}>
               <UserInput
                 label={"Saude"}
                 placeholder={"Doenças do animal"}
@@ -313,54 +273,50 @@ const AnimalRegistration = () => {
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Exigencias de adoção</Text>
+              <Text style={Title}>EXIGÊNCIAS DE ADOÇÃO</Text>
             </View>
             <View style={Row}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Termo de apadrinhamento</Text>
               </View>
             </View>
             <View style={Row}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Auxílio Financeiro</Text>
               </View>
             </View>
             <View style={Row}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={species}
+                  onValueChange={setSpecies}
                 />
                 <Text style={CheckboxText}>Visistas ao animal</Text>
               </View>
             </View>
             <View style={Row}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
+                  style={styles.checkbox}
+                  value={acompanhamentoBox}
+                  onValueChange={setAcompanhamentoBox}
                 />
-                <Text style={CheckboxText}>Acompanhamento apoas a adoção</Text>
+                <Text style={CheckboxText}>Acompanhamento pós adoção</Text>
               </View>
             </View>
             <View style={OffsetRow}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
                   status={species ? "checked" : "unchecked"}
                   disabled={true}
@@ -372,7 +328,7 @@ const AnimalRegistration = () => {
               </View>
             </View>
             <View style={OffsetRow}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
                   status={species ? "checked" : "unchecked"}
                   disabled={true}
@@ -384,7 +340,7 @@ const AnimalRegistration = () => {
               </View>
             </View>
             <View style={OffsetRow}>
-              <View style={CheckboxContainer}>
+              <View style={styles.LargeCheckboxContainer}>
                 <Checkbox
                   status={species ? "checked" : "unchecked"}
                   disabled={true}
@@ -398,13 +354,20 @@ const AnimalRegistration = () => {
           </View>
           <View style={TextField}>
             <View style={Row}>
-              <Text style={Title}>Sobre o animal</Text>
+              <Text style={Title}>SOBRE O ANIMAL</Text>
             </View>
             <View style={Row}>
               <UserInput
                 label={"Saude"}
                 placeholder={"Compartilhe a historia do animal"}
                 secureTextEntry={true}
+              />
+            </View>
+            <View style={styles.AdotarButtonView}>
+              <SimpleButton
+                text={"COLOCAR PARA ADOÇÃO"}
+                stylesButton={styles.StandardButton}
+                stylesText={styles.AdotarButtonText}
               />
             </View>
           </View>
@@ -415,19 +378,20 @@ const AnimalRegistration = () => {
 };
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
   TextField: {
+    marginHorizontal: 25,
+    marginBottom: 20,
+  },
+  TextRow: {
     width: "100%",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center",
-    marginLeft: 25,
   },
   Row: {
     width: "100%",
     flexDirection: "row",
     alignItems: "flex-start",
     display: "flex",
+    marginBottom: 2,
   },
   Col: {
     width: "30%",
@@ -444,14 +408,19 @@ const styles = StyleSheet.create({
     width: "30%",
     flexDirection: "row",
   },
+  LargeCheckboxContainer: {
+    paddingTop: 6,
+    width: "100%",
+    flexDirection: "row",
+  },
   CheckboxText: {
+    fontSize: 14,
     marginTop: 6,
   },
   Title: {
     color: "#f7a800",
   },
   BigTitle: {
-    fontFamily: "Roboto",
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 25,
@@ -491,6 +460,62 @@ const styles = StyleSheet.create({
     marginRight: 45,
     marginBottom: 25,
   },
+  ImageUploadBox: {
+    marginTop: 18,
+    color: "#757575",
+    backgroundColor: "#e6e7e7",
+    height: 128,
+    borderRadius: 2,
+    alignItems: "center",
+    textAlignVertical: "center",
+    paddingTop: 42,
+    shadowColor: "black",
+    shadowOffset: { width: -1, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+  },
+  ImageUploadIcon: {
+    color: "#757575",
+    fontSize: 22,
+  },
+  ImageUploadText: {
+    fontSize: 14,
+    color: "#757575",
+  },
+  inputArea: {
+    marginTop: 64,
+    flexDirection: "column",
+    gap: 20,
+  },
+  checkbox: {
+    marginRight: 6,
+  },
+  StandardButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    width: 320,
+    height: 50,
+    shadowColor: "black",
+    shadowOffset: { width: -2, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    backgroundColor: "#ffd358",
+  },
+  AdotarButtonView: {
+    marginTop: 22,
+    gap: 16,
+    alignItems: "center",
+    paddingBottom: 34,
+  },
+  AdotarButtonText: {
+    fontSize: 12,
+    color: "#434343",
+  },
+  HeaderTextView: { marginTop: 8, marginBottom: 24 },
 });
 
 export default AnimalRegistration;
