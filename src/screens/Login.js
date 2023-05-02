@@ -1,10 +1,9 @@
-import * as React from "react";
-import { View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { auth } from "../../firebase";
 
 import { StyleSheet } from "react-native";
-import UserInput from "../components/UserInput";
 import SocialLoginButton from "../components/SocialLoginButton";
-import SimpleButton from "../components/SimpleButton";
 
 const Login = () => {
   const {
@@ -17,27 +16,48 @@ const Login = () => {
     EntrarButton,
     GoogleEntrarButton,
     FacebookEntrarButton,
+    input,
   } = styles;
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in with:", user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <View style={container}>
       <View style={inputArea}>
-        <UserInput
-          label={"usuario"}
-          placeholder={"Nome de usuário"}
-          secureTextEntry={false}
+        <TextInput
+          label={"email"}
+          value={email}
+          placeholder={"E-mai"}
+          onChangeText={(text) => setEmail(text)}
+          style={input}
         />
-        <UserInput
-          label={"senha"}
-          placeholder={"Senha"}
+        <TextInput
           secureTextEntry={true}
+          label={"password"}
+          value={password}
+          placeholder={"Senha"}
+          onChangeText={(text) => setPassword(text)}
+          style={input}
         />
       </View>
       <View style={EntrarView}>
-        <SimpleButton
-          text={"ENTRAR"}
-          stylesButton={[StandardButton, EntrarButton]}
-          stylesText={EntrarButtonText}
-        />
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={[StandardButton, EntrarButton]}
+        >
+          <Text style={EntrarButtonText}>{"Entrar"}</Text>
+        </TouchableOpacity>
       </View>
       <View style={LogarRedesView}>
         <SocialLoginButton
@@ -97,6 +117,14 @@ const styles = StyleSheet.create({
   },
   FacebookEntrarButton: {
     backgroundColor: "#4267B2",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    padding: 10,
+    fontSize: 14,
+    borderBottomWidth: 0.8,
+    borderBottomColor: "#e6e7e8",
   },
 });
 
