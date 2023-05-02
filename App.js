@@ -20,13 +20,13 @@ const App = () => {
     <PaperProvider>
       <NavigationContainer>
         <Drawer.Navigator
-          initialRouteName='LoadingPage'
+          initialRouteName="LoadingPage"
           screenOptions={{
             drawerPosition: "left",
           }}
         >
           <Drawer.Screen
-            name='LoadingPage'
+            name="LoadingPage"
             component={LoadingPage}
             options={{
               title: "Loading",
@@ -44,7 +44,7 @@ const App = () => {
             }}
           />
           <Drawer.Screen
-            name='FrontPage'
+            name="FrontPage"
             component={FrontPage}
             options={{
               title: "Início",
@@ -61,7 +61,7 @@ const App = () => {
             }}
           />
           <Drawer.Screen
-            name='Login'
+            name="Login"
             component={Login}
             options={{
               title: "Login",
@@ -77,7 +77,7 @@ const App = () => {
             }}
           />
           <Drawer.Screen
-            name='RegisterUser'
+            name="RegisterUser"
             component={RegisterUser}
             options={{
               title: "Cadastro Pessoal",
@@ -93,7 +93,7 @@ const App = () => {
             }}
           />
           <Drawer.Screen
-            name='AnimalRegistration'
+            name="AnimalRegistration"
             component={AnimalRegistration}
             options={{
               title: "Cadastro de Animal",

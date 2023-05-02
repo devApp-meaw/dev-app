@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, TouchableOpacity } from "react-native";
 
 const SimpleButton = (props) => {
   const { text, stylesButton, stylesText } = props;
