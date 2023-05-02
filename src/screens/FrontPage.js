@@ -37,11 +37,6 @@ const FrontPage = () => {
           stylesText={AdotarButtonText}
         />
         <SimpleButton
-          text={"AJUDAR"}
-          stylesButton={StandardButton}
-          stylesText={AdotarButtonText}
-        />
-        <SimpleButton
           text={"CADASTRAR ANIMAL"}
           stylesButton={StandardButton}
           stylesText={AdotarButtonText}
