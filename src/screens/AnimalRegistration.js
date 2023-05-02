@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { AddAnimal } from "../../firebase";
 
-import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
 import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
 import UserInput from "../components/UserInput";
 import { Divider, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Checkbox from "expo-checkbox";
+import { Checkbox, RadioButton } from "react-native-paper";
 
 const AnimalRegistration = () => {
   const {
@@ -24,12 +31,72 @@ const AnimalRegistration = () => {
     ImageUploadBox,
     ImageUploadIcon,
     ImageUploadText,
+    InputText,
   } = styles;
-  const [species, setSpecies] = useState(false);
+
+  const [especieButton, setEspecieButton] = useState(null);
+  const [sexoButton, setSexoButton] = useState(null);
+  const [porteButton, setPorteButton] = useState(null);
+  const [idadeButton, setIdadeButton] = useState(null);
+
+  const [brincalhaoBox, setBrincalhaoBox] = useState(false);
+  const [timidoBox, setTimidoBox] = useState(false);
+  const [calmoBox, setCalmoBox] = useState(false);
+  const [guardaBox, setGuardaBox] = useState(false);
+  const [amorosoBox, setAmorosoBox] = useState(false);
+  const [preguicosoBox, setPreguicosoBox] = useState(false);
+
+  const [vacinadoBox, setVacinadoBox] = useState(false);
+  const [vermifugadoBox, setVermifugadoBox] = useState(false);
+  const [castradoBox, setCastradoBox] = useState(false);
+  const [doenteBox, setDoenteBox] = useState(false);
+
+  const [termoBox, setTermoBox] = useState(false);
+  const [auxilioBox, setAuxilioBox] = useState(false);
+  const [visitasBox, setVisitasBox] = useState(false);
   const [acompanhamentoBox, setAcompanhamentoBox] = useState(false);
-  const [gender, setGender] = useState(false);
-  const [size, setSize] = useState(false);
-  const [age, setAge] = useState(false);
+
+  const [alimentacaoBox, setAlimentacaoBox] = useState(false);
+  const [saudeBox, setSaudeBox] = useState(false);
+  const [objetosBox, setObjetosBox] = useState(false);
+
+  const [acompanhamentoButton, setAcompanhamentoButton] = useState(null);
+
+  const [nomeText, setNomeText] = useState("");
+  const [doencasText, setDoencasText] = useState("");
+  const [sobreText, setSobreText] = useState("");
+
+  const handleAddAnimal = () => {
+    form_animal = {
+      nome: nomeText,
+      especie: especieButton,
+      sexo: sexoButton,
+      porte: porteButton,
+      idade: idadeButton,
+      brincalhao: brincalhaoBox,
+      timido: timidoBox,
+      calmo: calmoBox,
+      guarda: guardaBox,
+      amoroso: amorosoBox,
+      preguicoso: preguicosoBox,
+      vacinado: vacinadoBox,
+      vermifugado: vermifugadoBox,
+      castrado: castradoBox,
+      doente: doenteBox,
+      doencas: doencasText,
+      termo_apadrinhamento: termoBox,
+      alimentacao: alimentacaoBox,
+      saude: saudeBox,
+      objetos: objetosBox,
+      visitas: visitasBox,
+      acompanhamento_pos: acompanhamentoButton,
+      sobre: sobreText,
+    };
+
+    console.log(AddAnimal);
+    return AddAnimal(form_animal).catch((error) => alert(error.message));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -42,10 +109,12 @@ const AnimalRegistration = () => {
               <Text style={Title}>Nome do animal</Text>
             </View>
             <View style={styles.TextRow}>
-              <UserInput
-                label={"Saude"}
+              <TextInput
+                label={"nomeLabel"}
+                value={nomeText}
                 placeholder={"Nome do animal"}
-                secureTextEntry={true}
+                onChangeText={(text) => setNomeText(text)}
+                style={InputText}
               />
             </View>
           </View>
@@ -64,18 +133,22 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="cachorro"
+                  status={
+                    especieButton === "cachorro" ? "checked" : "unchecked"
+                  }
+                  onPress={() => setEspecieButton("cachorro")}
                 />
                 <Text style={CheckboxText}>Cachorro</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="gato"
+                  status={especieButton === "gato" ? "checked" : "unchecked"}
+                  onPress={() => setEspecieButton("gato")}
                 />
                 <Text style={CheckboxText}>Gato</Text>
               </View>
@@ -87,18 +160,20 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="macho"
+                  status={sexoButton === "macho" ? "checked" : "unchecked"}
+                  onPress={() => setSexoButton("macho")}
                 />
                 <Text style={CheckboxText}>Macho</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="femea"
+                  status={sexoButton === "femea" ? "checked" : "unchecked"}
+                  onPress={() => setSexoButton("femea")}
                 />
                 <Text style={CheckboxText}>Fêmea</Text>
               </View>
@@ -110,26 +185,29 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="pequeno"
+                  status={porteButton === "pequeno" ? "checked" : "unchecked"}
+                  onPress={() => setPorteButton("pequeno")}
                 />
                 <Text style={CheckboxText}>Pequeno</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="medio"
+                  status={porteButton === "medio" ? "checked" : "unchecked"}
+                  onPress={() => setPorteButton("medio")}
                 />
                 <Text style={CheckboxText}>Médio</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="grande"
+                  status={porteButton === "grande" ? "checked" : "unchecked"}
+                  onPress={() => setPorteButton("grande")}
                 />
                 <Text style={CheckboxText}>Grande</Text>
               </View>
@@ -141,26 +219,29 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="filhote"
+                  status={idadeButton === "filhote" ? "checked" : "unchecked"}
+                  onPress={() => setIdadeButton("filhote")}
                 />
                 <Text style={CheckboxText}>Filhote</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="adulto"
+                  status={idadeButton === "adulto" ? "checked" : "unchecked"}
+                  onPress={() => setIdadeButton("adulto")}
                 />
                 <Text style={CheckboxText}>Adulto</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <RadioButton.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  value="idoso"
+                  status={idadeButton === "idoso" ? "checked" : "unchecked"}
+                  onPress={() => setIdadeButton("idoso")}
                 />
                 <Text style={CheckboxText}>Idoso</Text>
               </View>
@@ -172,52 +253,64 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={brincalhaoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setBrincalhaoBox(!brincalhaoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Brincalhão</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={timidoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setTimidoBox(!timidoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Tímido</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={calmoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setCalmoBox(!calmoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Calmo</Text>
               </View>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={guardaBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setGuardaBox(!guardaBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Guarda</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={amorosoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setAmorosoBox(!amorosoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Amoroso</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={preguicosoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setPreguicosoBox(!preguicosoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Preguiçoso</Text>
               </View>
@@ -229,45 +322,55 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={vacinadoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setVacinadoBox(!vacinadoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Vacinado</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={vermifugadoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setVermifugadoBox(!vermifugadoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Vermifugado</Text>
               </View>
             </View>
             <View style={Row}>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={castradoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setCastradoBox(!castradoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Castrado</Text>
               </View>
               <View style={CheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={doenteBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setDoenteBox(!doenteBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Doente</Text>
               </View>
             </View>
             <View style={styles.TextRow}>
-              <UserInput
-                label={"Saude"}
+              <TextInput
+                label={"doencasLabel"}
+                value={doencasText}
                 placeholder={"Doenças do animal"}
-                secureTextEntry={true}
+                onChangeText={(text) => setDoencasText(text)}
+                style={InputText}
               />
             </View>
           </View>
@@ -277,98 +380,164 @@ const AnimalRegistration = () => {
             </View>
             <View style={Row}>
               <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={termoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setTermoBox(!termoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Termo de apadrinhamento</Text>
               </View>
             </View>
             <View style={Row}>
               <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={auxilioBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setAuxilioBox(!auxilioBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Auxílio Financeiro</Text>
               </View>
             </View>
+            {auxilioBox ? (
+              <View style={OffsetRow}>
+                <View style={styles.LargeCheckboxContainer}>
+                  <Checkbox.Android
+                    style={styles.checkbox}
+                    status={alimentacaoBox ? "checked" : "unchecked"}
+                    onPress={() => {
+                      setAlimentacaoBox(!alimentacaoBox);
+                    }}
+                  />
+                  <Text style={[CheckboxText]}>Alimentação</Text>
+                </View>
+              </View>
+            ) : null}
+            {auxilioBox ? (
+              <View style={OffsetRow}>
+                <View style={styles.LargeCheckboxContainer}>
+                  <Checkbox.Android
+                    style={styles.checkbox}
+                    status={saudeBox ? "checked" : "unchecked"}
+                    onPress={() => {
+                      setSaudeBox(!saudeBox);
+                    }}
+                  />
+                  <Text style={[CheckboxText]}>Saúde</Text>
+                </View>
+              </View>
+            ) : null}
+            {auxilioBox ? (
+              <View style={OffsetRow}>
+                <View style={styles.LargeCheckboxContainer}>
+                  <Checkbox.Android
+                    style={styles.checkbox}
+                    status={objetosBox ? "checked" : "unchecked"}
+                    onPress={() => {
+                      setObjetosBox(!objetosBox);
+                    }}
+                  />
+                  <Text style={[CheckboxText]}>Objetos</Text>
+                </View>
+              </View>
+            ) : null}
             <View style={Row}>
               <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={species}
-                  onValueChange={setSpecies}
+                  status={visitasBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setVisitasBox(!visitasBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Visistas ao animal</Text>
               </View>
             </View>
             <View style={Row}>
               <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
+                <Checkbox.Android
                   style={styles.checkbox}
-                  value={acompanhamentoBox}
-                  onValueChange={setAcompanhamentoBox}
+                  status={acompanhamentoBox ? "checked" : "unchecked"}
+                  onPress={() => {
+                    setAcompanhamentoBox(!acompanhamentoBox);
+                  }}
                 />
                 <Text style={CheckboxText}>Acompanhamento pós adoção</Text>
               </View>
             </View>
-            <View style={OffsetRow}>
-              <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  disabled={true}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
-                />
-                <Text style={[CheckboxText, Disabled]}>1 mes</Text>
+            {acompanhamentoBox ? (
+              <View style={OffsetRow}>
+                <View style={styles.LargeCheckboxContainer}>
+                  <RadioButton.Android
+                    style={styles.checkbox}
+                    value="1mes"
+                    status={
+                      acompanhamentoButton === "1mes" ? "checked" : "unchecked"
+                    }
+                    onPress={() => setAcompanhamentoButton("1mes")}
+                  />
+                  <Text style={[CheckboxText]}>1 mês</Text>
+                </View>
               </View>
-            </View>
-            <View style={OffsetRow}>
-              <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  disabled={true}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
-                />
-                <Text style={[CheckboxText, Disabled]}>3 meses</Text>
+            ) : null}
+            {acompanhamentoBox ? (
+              <View style={OffsetRow}>
+                <View style={styles.LargeCheckboxContainer}>
+                  <RadioButton.Android
+                    style={styles.checkbox}
+                    value="3meses"
+                    status={
+                      acompanhamentoButton === "3meses"
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onPress={() => setAcompanhamentoButton("3meses")}
+                  />
+                  <Text style={[CheckboxText]}>3 meses</Text>
+                </View>
               </View>
-            </View>
-            <View style={OffsetRow}>
-              <View style={styles.LargeCheckboxContainer}>
-                <Checkbox
-                  status={species ? "checked" : "unchecked"}
-                  disabled={true}
-                  onPress={() => {
-                    setSpecies(!species);
-                  }}
-                />
-                <Text style={[CheckboxText, Disabled]}>6 meses</Text>
+            ) : null}
+            {acompanhamentoBox ? (
+              <View style={OffsetRow}>
+                <View style={styles.LargeCheckboxContainer}>
+                  <RadioButton.Android
+                    style={styles.checkbox}
+                    value="6meses"
+                    status={
+                      acompanhamentoButton === "6meses"
+                        ? "checked"
+                        : "unchecked"
+                    }
+                    onPress={() => setAcompanhamentoButton("6meses")}
+                  />
+                  <Text style={[CheckboxText]}>6 meses</Text>
+                </View>
               </View>
-            </View>
+            ) : null}
           </View>
           <View style={TextField}>
             <View style={Row}>
               <Text style={Title}>SOBRE O ANIMAL</Text>
             </View>
-            <View style={Row}>
-              <UserInput
-                label={"Saude"}
-                placeholder={"Compartilhe a historia do animal"}
-                secureTextEntry={true}
+            <View style={styles.TextRow}>
+              <TextInput
+                label={"sobreLabel"}
+                value={sobreText}
+                placeholder={"Compartilhe a história do animal"}
+                onChangeText={(text) => setSobreText(text)}
+                style={InputText}
               />
             </View>
             <View style={styles.AdotarButtonView}>
-              <SimpleButton
-                text={"COLOCAR PARA ADOÇÃO"}
-                stylesButton={styles.StandardButton}
-                stylesText={styles.AdotarButtonText}
-              />
+              <TouchableOpacity
+                onPress={handleAddAnimal}
+                style={styles.StandardButton}
+              >
+                <Text style={styles.AdotarButtonText}>COLOCAR PARA ADOÇÃO</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -516,6 +685,14 @@ const styles = StyleSheet.create({
     color: "#434343",
   },
   HeaderTextView: { marginTop: 8, marginBottom: 24 },
+  InputText: {
+    height: 40,
+    margin: 12,
+    padding: 10,
+    fontSize: 14,
+    borderBottomWidth: 0.8,
+    borderBottomColor: "#e6e7e8",
+  },
 });
 
 export default AnimalRegistration;

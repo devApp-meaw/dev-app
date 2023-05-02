@@ -1,0 +1,10 @@
+{
+  "firebaseConfig": {
+    "apiKey": "AIzaSyD2-7f6TwxN44Es6xeU3H_5FKtGHFCcEvg",
+    "authDomain": "meow-auth-c73ed.firebaseapp.com",
+    "projectId": "meow-auth-c73ed",
+    "storageBucket": "meow-auth-c73ed.appspot.com",
+    "messagingSenderId": "388750871006",
+    "appId": "1:388750871006:web:bbb12c81f154c46902b54f"
+  }
+}
