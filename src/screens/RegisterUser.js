@@ -15,7 +15,7 @@ import { auth, createUserDocument } from "../../firebase";
 import UserInput from "../components/UserInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const RegisterUser = () => {
+const RegisterUser = ({ navigation }) => {
   const {
     container,
     inputArea,
@@ -61,6 +61,7 @@ const RegisterUser = () => {
           userName,
         });
       })
+      .then(() => navigation.navigate("Login"))
       .catch((error) => alert(error.message));
   };
 

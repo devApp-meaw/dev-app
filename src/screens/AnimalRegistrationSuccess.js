@@ -4,7 +4,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import SimpleButton from "../components/SimpleButton";
 
-const FrontPage = ({ navigation }) => {
+const AnimalRegistrationSuccess = ({ navigation }) => {
   const {
     container,
     HeaderStyle,
@@ -22,38 +22,23 @@ const FrontPage = ({ navigation }) => {
   return (
     <View style={container}>
       <View style={HeaderStyle}>
-        <Text style={HeaderTextStyle}>Olá!</Text>
+        <Text style={HeaderTextStyle}>Eba!</Text>
       </View>
       <View style={ParagraphView}>
         <Text style={ParagraphText}>
-          Bem-vindo ao Meau!{"\n"}Aqui você pode adotar, doar e ajudar cães e
-          gatos com facilidade.{"\n"}Qual o seu interesse?
+          O cadastro do seu pet foi realizado com sucesso!{"\n"}
+          {"\n"}
+          Certifique-se que permitiu o envio de notificações por push no campo
+          de privacidade do menu configurações do aplicativo. Assim, poderemos
+          te avisar assim que alguém interessado entrar em contato!
         </Text>
       </View>
       <View style={AdotarButtonView}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("OpsCadastro")}
-          style={styles.StandardButton}
-        >
-          <Text style={styles.AdotarButtonText}>ADOTAR</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AnimalRegistration")}
-          style={styles.StandardButton}
-        >
-          <Text style={styles.AdotarButtonText}>CADASTRAR ANIMAL</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={LoginView}>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={LoginText}>login</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={LogoView}>
-        <Image
-          style={LogoImage}
-          source={require("../../assets/Meau_marca_2.png")}
-        ></Image>
+        <View style={styles.AdotarButtonView}>
+          <TouchableOpacity style={styles.StandardButton}>
+            <Text style={styles.AdotarButtonText}>MEUS PETS</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -112,4 +97,4 @@ const styles = StyleSheet.create({
   LogoView: { alignItems: "center" },
 });
 
-export default FrontPage;
+export default AnimalRegistrationSuccess;
