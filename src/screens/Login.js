@@ -5,7 +5,7 @@ import { auth } from "../../firebase";
 import { StyleSheet } from "react-native";
 import SocialLoginButton from "../components/SocialLoginButton";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const {
     container,
     inputArea,
@@ -29,6 +29,7 @@ const Login = () => {
         const user = userCredentials.user;
         console.log("Logged in with:", user.email);
       })
+      .then(() => navigation.navigate("AnimalRegistration"))
       .catch((error) => alert(error.message));
   };
 

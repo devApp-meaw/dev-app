@@ -1,10 +1,11 @@
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app";
-import firebaseConfig from "./firebase-config.json";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+
+const firebaseConfig = {};
 
 // Your web app's Firebase configuration
 let app;

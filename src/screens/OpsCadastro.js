@@ -4,7 +4,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 import SimpleButton from "../components/SimpleButton";
 
-const FrontPage = ({ navigation }) => {
+const OpsCadastro = ({ navigation }) => {
   const {
     container,
     HeaderStyle,
@@ -22,38 +22,35 @@ const FrontPage = ({ navigation }) => {
   return (
     <View style={container}>
       <View style={HeaderStyle}>
-        <Text style={HeaderTextStyle}>Olá!</Text>
+        <Text style={HeaderTextStyle}>Ops!</Text>
       </View>
       <View style={ParagraphView}>
         <Text style={ParagraphText}>
-          Bem-vindo ao Meau!{"\n"}Aqui você pode adotar, doar e ajudar cães e
-          gatos com facilidade.{"\n"}Qual o seu interesse?
+          Você não pode realizar esta ação sem possuir um cadastro.
         </Text>
       </View>
       <View style={AdotarButtonView}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("OpsCadastro")}
-          style={styles.StandardButton}
-        >
-          <Text style={styles.AdotarButtonText}>ADOTAR</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AnimalRegistration")}
-          style={styles.StandardButton}
-        >
-          <Text style={styles.AdotarButtonText}>CADASTRAR ANIMAL</Text>
-        </TouchableOpacity>
+        <View style={styles.AdotarButtonView}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RegisterUser")}
+            style={styles.StandardButton}
+          >
+            <Text style={styles.AdotarButtonText}>FAZER CADASTRO</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={LoginView}>
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={LoginText}>login</Text>
-        </TouchableOpacity>
+      <View style={ParagraphView}>
+        <Text style={ParagraphText}>Já possui cadastro?</Text>
       </View>
-      <View style={LogoView}>
-        <Image
-          style={LogoImage}
-          source={require("../../assets/Meau_marca_2.png")}
-        ></Image>
+      <View style={AdotarButtonView}>
+        <View style={styles.AdotarButtonView}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Login")}
+            style={styles.StandardButton}
+          >
+            <Text style={styles.AdotarButtonText}>FAZER LOGIN</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -65,18 +62,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#FAFAFA",
   },
   HeaderTextStyle: {
-    color: "#ffd358",
+    color: "#88c9bf",
     fontSize: 80,
     fontFamily: "Courgette_400Regular",
   },
-  HeaderStyle: { paddingTop: 20, alignItems: "center" },
+  HeaderStyle: { marginTop: 40, alignItems: "center", marginBottom: 40 },
   ParagraphText: { color: "#575756", fontSize: 18, textAlign: "center" },
-  ParagraphView: { paddingTop: 42, paddingBottom: 20, paddingHorizontal: 48 },
+  ParagraphView: { marginTop: 42, marginBottom: 14, paddingHorizontal: 48 },
   StandardButton: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
     width: 320,
@@ -85,13 +80,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 2,
-    backgroundColor: "#ffd358",
+    backgroundColor: "#88c9bf",
   },
   AdotarButtonView: {
-    marginTop: 22,
-    gap: 16,
+    marginTop: 6,
     alignItems: "center",
-    paddingBottom: 34,
+    paddingBottom: 20,
   },
   AdotarButtonText: {
     fontSize: 12,
@@ -112,4 +106,4 @@ const styles = StyleSheet.create({
   LogoView: { alignItems: "center" },
 });
 
-export default FrontPage;
+export default OpsCadastro;

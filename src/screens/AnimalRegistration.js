@@ -16,7 +16,7 @@ import { Divider, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Checkbox, RadioButton } from "react-native-paper";
 
-const AnimalRegistration = () => {
+const AnimalRegistration = ({ navigation }) => {
   const {
     Row,
     TextField,
@@ -94,7 +94,9 @@ const AnimalRegistration = () => {
     };
 
     console.log(AddAnimal);
-    return AddAnimal(form_animal).catch((error) => alert(error.message));
+    return AddAnimal(form_animal)
+      .then(() => navigation.navigate("AnimalRegistrationSuccess"))
+      .catch((error) => alert(error.message));
   };
 
   return (
