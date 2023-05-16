@@ -13,6 +13,8 @@ import AnimalRegistrationSuccess from "./src/screens/AnimalRegistrationSuccess";
 import OpsCadastro from "./src/screens/OpsCadastro";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -20,14 +22,14 @@ const Stack = createStackNavigator();
 function Root() {
   return (
     <Drawer.Navigator
-      initialRouteName="LoadingPage"
+      initialRouteName='LoadingPage'
       screenOptions={{
         drawerPosition: "left",
       }}
     >
       <Drawer.Screen
-        name="LoadingPage"
-        component={LoadingPage}
+        name='LoadingPage'
+        component={Login}
         options={{
           title: "Loading",
           headerShown: false,
@@ -44,7 +46,7 @@ function Root() {
         }}
       />
       <Drawer.Screen
-        name="FrontPage"
+        name='FrontPage'
         component={FrontPage}
         options={{
           title: "Início",
@@ -61,7 +63,7 @@ function Root() {
         }}
       />
       <Drawer.Screen
-        name="Login"
+        name='Login'
         component={Login}
         options={{
           title: "Login",
@@ -77,7 +79,7 @@ function Root() {
         }}
       />
       <Drawer.Screen
-        name="RegisterUser"
+        name='RegisterUser'
         component={RegisterUser}
         options={{
           title: "Cadastro Pessoal",
@@ -93,7 +95,7 @@ function Root() {
         }}
       />
       <Drawer.Screen
-        name="AnimalRegistration"
+        name='AnimalRegistration'
         component={AnimalRegistration}
         options={{
           title: "Cadastro do Animal",
@@ -117,49 +119,51 @@ const App = () => {
     Courgette_400Regular,
   });
   return (
-    <PaperProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerBackTitleVisible: false,
-          }}
-        >
-          <Stack.Screen
-            name="Root"
-            component={Root}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AnimalRegistrationSuccess"
-            component={AnimalRegistrationSuccess}
-            options={{
-              title: "Cadastro do Animal",
-              headerStyle: {
-                backgroundColor: "#ffd358",
-              },
-              headerTintColor: "#434343",
-              headerTitleStyle: {
-                fontSize: 20,
-              },
+    <Provider store={store}>
+      <PaperProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerBackTitleVisible: false,
             }}
-          />
-          <Stack.Screen
-            name="OpsCadastro"
-            component={OpsCadastro}
-            options={{
-              title: "Cadastro",
-              headerStyle: {
-                backgroundColor: "#88c9bf",
-              },
-              headerTintColor: "#434343",
-              headerTitleStyle: {
-                fontSize: 20,
-              },
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+          >
+            <Stack.Screen
+              name='Root'
+              component={Root}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='AnimalRegistrationSuccess'
+              component={AnimalRegistrationSuccess}
+              options={{
+                title: "Cadastro do Animal",
+                headerStyle: {
+                  backgroundColor: "#ffd358",
+                },
+                headerTintColor: "#434343",
+                headerTitleStyle: {
+                  fontSize: 20,
+                },
+              }}
+            />
+            <Stack.Screen
+              name='OpsCadastro'
+              component={OpsCadastro}
+              options={{
+                title: "Cadastro",
+                headerStyle: {
+                  backgroundColor: "#88c9bf",
+                },
+                headerTintColor: "#434343",
+                headerTitleStyle: {
+                  fontSize: 20,
+                },
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </Provider>
   );
 };
 

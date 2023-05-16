@@ -5,15 +5,18 @@ import "firebase/compat/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseConfig = {};
+const firebaseConfig = {
+  apiKey: "AIzaSyD2-7f6TwxN44Es6xeU3H_5FKtGHFCcEvg",
+  authDomain: "meow-auth-c73ed.firebaseapp.com",
+  projectId: "meow-auth-c73ed",
+  storageBucket: "meow-auth-c73ed.appspot.com",
+  messagingSenderId: "388750871006",
+  appId: "1:388750871006:web:bbb12c81f154c46902b54f",
+};
 
 // Your web app's Firebase configuration
-let app;
-if (firebase.apps.length === 0) {
-  app = firebase.initializeApp(firebaseConfig);
-} else {
-  app = firebase.app();
-}
+let app = firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
