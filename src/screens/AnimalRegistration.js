@@ -63,12 +63,14 @@ const AnimalRegistration = ({ navigation }) => {
   const [acompanhamentoButton, setAcompanhamentoButton] = useState(null);
 
   const [nomeText, setNomeText] = useState("");
+  const [emailText, setEmailText] = useState("");
   const [doencasText, setDoencasText] = useState("");
   const [sobreText, setSobreText] = useState("");
 
   const handleAddAnimal = () => {
     form_animal = {
       nome: nomeText,
+      email: emailText,
       especie: especieButton,
       sexo: sexoButton,
       porte: porteButton,
@@ -105,6 +107,20 @@ const AnimalRegistration = ({ navigation }) => {
         <View>
           <View style={styles.HeaderTextView}>
             <Text style={BigTitle}>Adoção</Text>
+          </View>
+          <View style={TextField}>
+            <View style={Row}>
+              <Text style={Title}>E-mail do dono</Text>
+            </View>
+            <View style={styles.TextRow}>
+              <TextInput
+                label={"emailLabel"}
+                value={emailText}
+                placeholder={"E-mail do dono"}
+                onChangeText={(text) => setEmailText(text)}
+                style={InputText}
+              />
+            </View>
           </View>
           <View style={TextField}>
             <View style={Row}>
