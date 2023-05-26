@@ -13,8 +13,9 @@ import AnimalRegistrationSuccess from "./src/screens/AnimalRegistrationSuccess";
 import OpsCadastro from "./src/screens/OpsCadastro";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "./src/redux/store";
+import { useState, useEffect } from "react";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

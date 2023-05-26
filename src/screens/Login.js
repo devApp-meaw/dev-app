@@ -30,8 +30,8 @@ const Login = ({ navigation }) => {
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("Logged in with:", user.email);
-        dispatch(changeUser());
+        console.log("Logged in with:", user);
+        dispatch(changeUser(user));
       })
       .then(() => navigation.navigate("AnimalRegistration"))
       .catch((error) => alert(error.message));
