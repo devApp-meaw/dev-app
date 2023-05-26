@@ -30,7 +30,7 @@ function Root() {
     >
       <Drawer.Screen
         name='LoadingPage'
-        component={Login}
+        component={LoadingPage}
         options={{
           title: "Loading",
           headerShown: false,
