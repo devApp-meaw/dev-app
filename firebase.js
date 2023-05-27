@@ -50,6 +50,7 @@ const AddAnimal = async (form_animal) => {
   try {
     const {
       nome,
+      email,
       especie,
       sexo,
       porte,
@@ -76,6 +77,7 @@ const AddAnimal = async (form_animal) => {
 
     await firestore.collection("animals").add({
       nome: nome,
+      email: email,
       especie: especie,
       sexo: sexo,
       porte: porte,
@@ -113,4 +115,10 @@ const AddAnimal = async (form_animal) => {
   }
 };
 
-export { auth, firestore, firebase, createUserDocument, AddAnimal };
+const GetAnimals = async () => {
+  const snapshot = await firestore.collection("animals").get();
+  const teste = snapshot.docs.map((doc) => doc.data());
+  return teste;
+};
+
+export { auth, firestore, firebase, createUserDocument, AddAnimal, GetAnimals };
