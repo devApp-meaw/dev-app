@@ -11,6 +11,7 @@ import FrontPage from "./src/screens/FrontPage";
 import LoadingPage from "./src/screens/LoadingPage";
 import AnimalRegistrationSuccess from "./src/screens/AnimalRegistrationSuccess";
 import OpsCadastro from "./src/screens/OpsCadastro";
+import ListAnimals from "./src/screens/ListAnimals";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
 import { Provider, useSelector } from "react-redux";
@@ -100,6 +101,22 @@ function Root() {
         component={AnimalRegistration}
         options={{
           title: "Cadastro do Animal",
+          headerShadowVisible: true,
+          headerTitleAlign: "left",
+          headerStyle: {
+            backgroundColor: "#ffd358",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+        }}
+      />
+      <Drawer.Screen
+        name="ListAnimals"
+        component={ListAnimals}
+        options={{
+          title: "Lista de Animais",
           headerShadowVisible: true,
           headerTitleAlign: "left",
           headerStyle: {
