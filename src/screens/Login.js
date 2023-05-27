@@ -4,6 +4,8 @@ import { auth } from "../../firebase";
 
 import { StyleSheet } from "react-native";
 import SocialLoginButton from "../components/SocialLoginButton";
+import { useDispatch } from "react-redux";
+import { changeUser } from "../redux/userSlice";
 
 const Login = ({ navigation }) => {
   const {
@@ -21,13 +23,15 @@ const Login = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log("Logged in with:", user.email);
+        console.log("Logged in with:", user);
+        dispatch(changeUser(user));
       })
       .then(() => navigation.navigate("AnimalRegistration"))
       .catch((error) => alert(error.message));
