@@ -13,7 +13,6 @@ import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
 import UserInput from "../components/UserInput";
 import { Divider, Button } from "react-native-paper";
-import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Checkbox, RadioButton } from "react-native-paper";
 
@@ -104,7 +103,6 @@ const AnimalRegistration = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View>
-          <Text>{store.clickState.newValue}</Text>
           <View style={styles.HeaderTextView}>
             <Text style={BigTitle}>Adoção</Text>
           </View>
