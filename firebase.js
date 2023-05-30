@@ -23,7 +23,8 @@ const firestore = firebase.firestore();
 const createUserDocument = async (user, additionalData) => {
   if (!user) return;
 
-  const userRef = firestore.doc(`users/${user.uid}`);
+  const userId = user.uid;
+  const userRef = firestore.doc(`users/${userId}`);
   const snapshot = await userRef.get();
 
   if (!snapshot.exists) {
@@ -41,6 +42,7 @@ const createUserDocument = async (user, additionalData) => {
         address,
         telephone,
         userName,
+        userId,
         createdAt: new Date(),
       });
     } catch (error) {
@@ -53,7 +55,7 @@ const AddAnimal = async (form_animal) => {
   try {
     const {
       nome,
-      email,
+      userId,
       especie,
       sexo,
       porte,
@@ -80,7 +82,7 @@ const AddAnimal = async (form_animal) => {
 
     await firestore.collection("animals").add({
       nome: nome,
-      email: email,
+      userId: userId,
       especie: especie,
       sexo: sexo,
       porte: porte,
