@@ -3,6 +3,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
+import TouchableOpacity from "react-native";
+
 import Login from "./src/screens/Login";
 import AnimalRegistration from "./src/screens/AnimalRegistration";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -12,12 +14,15 @@ import LoadingPage from "./src/screens/LoadingPage";
 import AnimalRegistrationSuccess from "./src/screens/AnimalRegistrationSuccess";
 import OpsCadastro from "./src/screens/OpsCadastro";
 import ListAnimals from "./src/screens/ListAnimals";
+import MyPets from "./src/screens/MyPets";
+import AdoptPet from "./src/screens/AdoptPet";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
 import { Provider, useSelector } from "react-redux";
 import store from "./src/redux/store";
 import { useState, useEffect } from "react";
-import MyPets from "./src/screens/MyPets";
+
+import { AntDesign } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -143,6 +148,38 @@ function Root() {
           headerTitleStyle: {
             fontSize: 20,
           },
+          headerRight: () => (
+            <AntDesign
+              style={{ marginRight: 15 }}
+              name="search1"
+              size={24}
+              color="black"
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="AdoptPet"
+        component={AdoptPet}
+        options={{
+          title: "Adotar",
+          headerShadowVisible: true,
+          headerTitleAlign: "left",
+          headerStyle: {
+            backgroundColor: "#ffd358",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <AntDesign
+              style={{ marginRight: 15 }}
+              name="search1"
+              size={24}
+              color="black"
+            />
+          ),
         }}
       />
     </Drawer.Navigator>

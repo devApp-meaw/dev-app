@@ -78,6 +78,7 @@ const AddAnimal = async (form_animal) => {
       visitas,
       acompanhamento_pos,
       sobre,
+      adocao,
     } = form_animal;
 
     await firestore.collection("animals").add({
@@ -113,6 +114,7 @@ const AddAnimal = async (form_animal) => {
         acompanhamento_pos: acompanhamento_pos,
       },
       sobre: sobre,
+      adocao: adocao,
     });
     console.log("Animal adicionado.");
   } catch (error) {

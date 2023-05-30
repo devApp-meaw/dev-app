@@ -8,9 +8,11 @@ import { useSelector } from "react-redux";
 
 import { useIsFocused } from "@react-navigation/native";
 
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
-const MyPets = ({ navigation }) => {
+import { collection, getDocs, query, where } from "firebase/firestore";
+
+const AdoptPet = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
 
   console.log(uid);
@@ -26,11 +28,19 @@ const MyPets = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   const getPost = async () => {
+    const q = query(
+      collection(firestore, "animals"),
+      where("userId", "!=", uid),
+      where("adocao", "==", true)
+    );
+    querySnapshot = await getDocs(q);
+
     const snapshot = await firestore
       .collection("animals")
-      .where("userId", "==", uid)
+      .where("userId", "!=", uid)
       .get();
-    const animals = snapshot.docs.map(collectIdsAndDocs);
+    //const animals = snapshot.docs.map(collectIdsAndDocs);
+    const animals = querySnapshot.docs.map(collectIdsAndDocs);
     setAnimals(animals);
   };
 
@@ -39,13 +49,21 @@ const MyPets = ({ navigation }) => {
     getPost();
   }, [isFocused]);
 
+  const handleInterestPet = (animalId) => {
+    firestore.collection("interest").add({
+      userId: uid,
+      animalId: animalId,
+    });
+
+    console.log("Interesse adicionado");
+  };
+
   return (
     <SafeAreaView>
       <FlatList
         data={animals}
         renderItem={({ item }) => {
           const animalId = item.id;
-          const especie = item.especie == "cachorro" ? "dog" : "cat";
           const petImage =
             item.especie == "cachorro"
               ? require("../../assets/dog.jpg")
@@ -55,12 +73,12 @@ const MyPets = ({ navigation }) => {
             <View style={styles.PetView}>
               <View style={styles.NameView}>
                 <Text style={styles.NameText}> {item.nome} </Text>
-                <Ionicons
-                  style={styles.NotificationIcon}
-                  name="alert-circle"
-                  size={24}
-                  color="black"
-                />
+                <TouchableOpacity
+                  style={styles.HeartIcon}
+                  onPress={() => handleInterestPet(animalId)}
+                >
+                  <AntDesign name="hearto" size={24} color="black" />
+                </TouchableOpacity>
               </View>
               <View>
                 <Image style={styles.petImageStyle} source={petImage}></Image>
@@ -102,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderTopLeftRadius: 4,
     borderTopEndRadius: 4,
-    backgroundColor: "#cfe9e5",
+    backgroundColor: "#fee29b",
   },
 
   NameText: {
@@ -129,10 +147,10 @@ const styles = StyleSheet.create({
     color: "#757575",
   },
 
-  NotificationIcon: {
+  HeartIcon: {
     marginLeft: "auto",
     marginRight: 10,
   },
 });
 
-export default MyPets;
+export default AdoptPet;

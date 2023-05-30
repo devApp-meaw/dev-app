@@ -96,6 +96,7 @@ const AnimalRegistration = ({ navigation }) => {
       visitas: visitasBox,
       acompanhamento_pos: acompanhamentoButton,
       sobre: sobreText,
+      adocao: true,
     };
 
     console.log(AddAnimal);
