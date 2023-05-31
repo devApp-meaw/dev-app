@@ -99,8 +99,8 @@ const AdoptPet = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   PetView: {
-    width: 380,
-    marginHorizontal: 16,
+    width: "90%",
+    alignSelf: "center",
     marginTop: 16,
     backgroundColor: "#fff",
     shadowColor: "#000",
