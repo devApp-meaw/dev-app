@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { AddAnimal } from "../../firebase";
 
@@ -15,6 +15,7 @@ import UserInput from "../components/UserInput";
 import { Divider, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Checkbox, RadioButton } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 const AnimalRegistration = ({ navigation }) => {
   const {
@@ -66,6 +67,7 @@ const AnimalRegistration = ({ navigation }) => {
   const [emailText, setEmailText] = useState("");
   const [doencasText, setDoencasText] = useState("");
   const [sobreText, setSobreText] = useState("");
+  const user = useSelector((state) => state.user);
 
   const handleAddAnimal = () => {
     form_animal = {
@@ -95,10 +97,13 @@ const AnimalRegistration = ({ navigation }) => {
       sobre: sobreText,
     };
 
-    console.log(AddAnimal);
-    return AddAnimal(form_animal)
-      .then(() => navigation.navigate("AnimalRegistrationSuccess"))
-      .catch((error) => alert(error.message));
+    if (user.isLogged) {
+      return AddAnimal(form_animal)
+        .then(() => navigation.navigate("AnimalRegistrationSuccess"))
+        .catch((error) => alert(error.message));
+    } else {
+      alert("Usuário não logado");
+    }
   };
 
   return (
