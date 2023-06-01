@@ -8,10 +8,12 @@ import AnimalRegistration from "../src/screens/AnimalRegistration";
 import RegisterUser from "../src/screens/RegisterUser";
 import FrontPage from "../src/screens/FrontPage";
 import LoadingPage from "../src/screens/LoadingPage";
-import ListAnimals from "../src/screens/ListAnimals";
+import MyPets from "../src/screens/MyPets";
+import AdoptPet from "../src/screens/AdoptPet";
 import { useSelector } from "react-redux";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
+import { AntDesign } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -20,7 +22,7 @@ const DrawerNavigator = () => {
   const user = useSelector((state) => state.user);
   return (
     <Drawer.Navigator
-      initialRouteName='LoadingPage'
+      initialRouteName="LoadingPage"
       screenOptions={{
         drawerPosition: "left",
       }}
@@ -28,7 +30,7 @@ const DrawerNavigator = () => {
       {user.isLogged ? (
         <>
           <Drawer.Screen
-            name='RegisterUser'
+            name="RegisterUser"
             component={RegisterUser}
             options={{
               title: "Cadastro Pessoal",
@@ -44,7 +46,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='AnimalRegistration'
+            name="AnimalRegistration"
             component={AnimalRegistration}
             options={{
               title: "Cadastro do Animal",
@@ -60,10 +62,34 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='ListAnimals'
-            component={ListAnimals}
+            name="MyPets"
+            component={MyPets}
             options={{
-              title: "Lista de Animais",
+              title: "Meus Pets",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#88c9bf",
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+              headerRight: () => (
+                <AntDesign
+                  style={{ marginRight: 15 }}
+                  name="search1"
+                  size={24}
+                  color="black"
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="AdoptPet"
+            component={AdoptPet}
+            options={{
+              title: "Adotar",
               headerShadowVisible: true,
               headerTitleAlign: "left",
               headerStyle: {
@@ -73,13 +99,21 @@ const DrawerNavigator = () => {
               headerTitleStyle: {
                 fontSize: 20,
               },
+              headerRight: () => (
+                <AntDesign
+                  style={{ marginRight: 15 }}
+                  name="search1"
+                  size={24}
+                  color="black"
+                />
+              ),
             }}
           />
         </>
       ) : (
         <>
           <Drawer.Screen
-            name='LoadingPage'
+            name="LoadingPage"
             component={LoadingPage}
             options={{
               title: "Loading",
@@ -97,7 +131,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='FrontPage'
+            name="FrontPage"
             component={FrontPage}
             options={{
               title: "Início",
@@ -114,7 +148,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='Login'
+            name="Login"
             component={Login}
             options={{
               title: "Login",
@@ -146,12 +180,12 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name='DrawerNavigator'
+        name="DrawerNavigator"
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name='AnimalRegistrationSuccess'
+        name="AnimalRegistrationSuccess"
         component={AnimalRegistrationSuccess}
         options={{
           title: "Cadastro do Animal",
@@ -165,7 +199,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='OpsCadastro'
+        name="OpsCadastro"
         component={OpsCadastro}
         options={{
           title: "Cadastro",
