@@ -2,17 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { AddAnimal } from "../../firebase";
 
-import {
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-  KeyboardAvoidingView,
-} from "react-native";
-import SimpleButton from "../components/SimpleButton";
-import CheckBox from "@react-native-community/checkbox";
-import UserInput from "../components/UserInput";
-import { Divider, Button } from "react-native-paper";
+import { StyleSheet, SafeAreaView, ScrollView, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Checkbox, RadioButton } from "react-native-paper";
 import { useSelector } from "react-redux";
