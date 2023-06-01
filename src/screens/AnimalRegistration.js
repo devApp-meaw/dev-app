@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
+  Image,
 } from "react-native";
 import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
@@ -16,6 +17,8 @@ import { Divider, Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Checkbox, RadioButton } from "react-native-paper";
 import { useSelector } from "react-redux";
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 const AnimalRegistration = ({ navigation }) => {
   const stateUser = useSelector((state) => state.user);
@@ -69,6 +72,37 @@ const AnimalRegistration = ({ navigation }) => {
   const [nomeText, setNomeText] = useState("");
   const [doencasText, setDoencasText] = useState("");
   const [sobreText, setSobreText] = useState("");
+ 
+  const [imageBase64, setImageBase64] = useState("");
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [3, 3],
+        quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+        //setImage(result.assets[0].uri);
+
+        var imguri = result.assets[0].uri;
+        const fsRead = await FileSystem.readAsStringAsync(imguri, {
+          encoding: "base64",
+        });
+
+        const base64Img = `data:img/png;base64,${fsRead}`;
+        //console.log(base64Img);
+        setImage(base64Img);
+        setImageBase64(base64Img);
+        //console.log("deu bao");
+    }
+
+  };
 
   const handleAddAnimal = () => {
     form_animal = {
@@ -97,7 +131,9 @@ const AnimalRegistration = ({ navigation }) => {
       acompanhamento_pos: acompanhamentoButton,
       sobre: sobreText,
       adocao: true,
+      imageBase64: imageBase64,
     };
+ 
 
     console.log(AddAnimal);
     return AddAnimal(form_animal)
@@ -130,9 +166,12 @@ const AnimalRegistration = ({ navigation }) => {
             <View style={Row}>
               <Text style={Title}>Fotos do animal</Text>
             </View>
-            <View style={ImageUploadBox}>
+            <Button style={ImageUploadBox} onPress={pickImage}>
               <Icon name="plus-circle" style={ImageUploadIcon} />
               <Text style={ImageUploadText}>adicionar foto</Text>
+            </Button>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             </View>
           </View>
           <View style={TextField}>
