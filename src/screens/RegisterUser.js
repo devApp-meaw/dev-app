@@ -10,10 +10,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { Divider, Button } from "react-native-paper";
 import { auth, createUserDocument } from "../../firebase";
 
 import UserInput from "../components/UserInput";
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 const RegisterUser = ({ navigation }) => {
   const {
@@ -43,6 +46,37 @@ const RegisterUser = ({ navigation }) => {
   const [address, setAddress] = useState("");
   const [telephone, setTelephone] = useState("");
   const [userName, setUserName] = useState("");
+  const [imageBase64, setImageBase64] = useState("");
+  const [image, setImage] = useState(null);
+
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [3, 3],
+        quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+        //setImage(result.assets[0].uri);
+
+        var imguri = result.assets[0].uri;
+        const fsRead = await FileSystem.readAsStringAsync(imguri, {
+          encoding: "base64",
+        });
+
+        const base64Img = `data:img/png;base64,${fsRead}`;
+        //console.log(base64Img);
+        setImage(base64Img);
+        setImageBase64(base64Img);
+        //console.log("deu bao");
+    }
+
+  };
 
   const handleSignUp = () => {
     auth
@@ -59,6 +93,7 @@ const RegisterUser = ({ navigation }) => {
           address,
           telephone,
           userName,
+          imageBase64,
         });
       })
       .then(() => navigation.navigate("Login"))
@@ -162,9 +197,12 @@ const RegisterUser = ({ navigation }) => {
 
           <View style={InputTitleView}>
             <Text style={InputTitleText}> FOTO DE PERFIL</Text>
-            <View style={ImageUploadBox}>
+            <Button style={ImageUploadBox} onPress={pickImage} >
               <Icon name="plus-circle" style={ImageUploadIcon} />
               <Text style={ImageUploadText}>adicionar foto</Text>
+            </Button>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             </View>
           </View>
 

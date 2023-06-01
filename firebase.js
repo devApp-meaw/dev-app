@@ -29,7 +29,7 @@ const createUserDocument = async (user, additionalData) => {
 
   if (!snapshot.exists) {
     const { email } = user;
-    const { fullName, age, state, city, address, telephone, userName } =
+    const { fullName, age, state, city, address, telephone, userName, imageBase64 } =
       additionalData;
 
     try {
@@ -43,6 +43,7 @@ const createUserDocument = async (user, additionalData) => {
         telephone,
         userName,
         userId,
+        imageBase64,
         createdAt: new Date(),
       });
     } catch (error) {
