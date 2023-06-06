@@ -51,28 +51,34 @@ const MyPets = ({ navigation }) => {
               ? require("../../assets/dog.jpg")
               : require("../../assets/cat.jpg");
 
-          if (typeof item.imageBase64 !== 'undefined') {
-            petImage = { uri: item.imageBase64 };
+          if (typeof item.imageBase64 !== "undefined") {
+            if (item.imageBase64 !== "") {
+              petImage = { uri: item.imageBase64 };
+            }
           }
 
           return (
             <View style={styles.PetView}>
-              <View style={styles.NameView}>
-                <Text style={styles.NameText}> {item.nome} </Text>
-                <Ionicons
-                  style={styles.NotificationIcon}
-                  name="alert-circle"
-                  size={24}
-                  color="black"
-                />
-              </View>
-              <View>
-                <Image style={styles.petImageStyle} source={petImage}></Image>
-              </View>
-              <View style={styles.DetailsView}>
-                <Text style={styles.DetailsText}>X NOVOS INTERESSADOS</Text>
-                <Text style={styles.DetailsText}>APADRINHAMENTO | AJUDA</Text>
-              </View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("MyPet", { pet: item })}
+              >
+                <View style={styles.NameView}>
+                  <Text style={styles.NameText}> {item.nome} </Text>
+                  <Ionicons
+                    style={styles.NotificationIcon}
+                    name="alert-circle"
+                    size={24}
+                    color="black"
+                  />
+                </View>
+                <View>
+                  <Image style={styles.petImageStyle} source={petImage}></Image>
+                </View>
+                <View style={styles.DetailsView}>
+                  <Text style={styles.DetailsText}>X NOVOS INTERESSADOS</Text>
+                  <Text style={styles.DetailsText}>APADRINHAMENTO | AJUDA</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           );
         }}

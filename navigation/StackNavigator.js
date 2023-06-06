@@ -14,6 +14,8 @@ import { useSelector } from "react-redux";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import MyPet from "../src/screens/MyPet";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -211,6 +213,28 @@ const StackNavigator = () => {
             fontSize: 20,
           },
         }}
+      />
+      <Stack.Screen
+        name="MyPet"
+        component={MyPet}
+        options={({ route }) => ({
+          title: route.params.pet.nome,
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <Ionicons
+              style={{ marginRight: 15, color: "#434343" }}
+              name="share-social"
+              size={24}
+              color="black"
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );
