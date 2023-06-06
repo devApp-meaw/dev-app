@@ -18,11 +18,24 @@ import { AntDesign } from "@expo/vector-icons";
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label='Help'
+        onPress={() => Linking.openURL("https://mywebsite.com/help")}
+      />
+    </DrawerContentScrollView>
+  );
+}
+
 const DrawerNavigator = () => {
   const user = useSelector((state) => state.user);
   return (
     <Drawer.Navigator
-      initialRouteName="LoadingPage"
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      initialRouteName='LoadingPage'
       screenOptions={{
         drawerPosition: "left",
       }}
@@ -30,7 +43,7 @@ const DrawerNavigator = () => {
       {user.isLogged ? (
         <>
           <Drawer.Screen
-            name="RegisterUser"
+            name='RegisterUser'
             component={RegisterUser}
             options={{
               title: "Cadastro Pessoal",
@@ -46,7 +59,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="AnimalRegistration"
+            name='AnimalRegistration'
             component={AnimalRegistration}
             options={{
               title: "Cadastro do Animal",
@@ -62,7 +75,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="MyPets"
+            name='MyPets'
             component={MyPets}
             options={{
               title: "Meus Pets",
@@ -78,15 +91,15 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
           />
           <Drawer.Screen
-            name="AdoptPet"
+            name='AdoptPet'
             component={AdoptPet}
             options={{
               title: "Adotar",
@@ -102,9 +115,9 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
@@ -113,7 +126,7 @@ const DrawerNavigator = () => {
       ) : (
         <>
           <Drawer.Screen
-            name="LoadingPage"
+            name='LoadingPage'
             component={LoadingPage}
             options={{
               title: "Loading",
@@ -131,7 +144,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="FrontPage"
+            name='FrontPage'
             component={FrontPage}
             options={{
               title: "Início",
@@ -148,7 +161,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="Login"
+            name='Login'
             component={Login}
             options={{
               title: "Login",
@@ -180,12 +193,12 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name="DrawerNavigator"
+        name='DrawerNavigator'
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="AnimalRegistrationSuccess"
+        name='AnimalRegistrationSuccess'
         component={AnimalRegistrationSuccess}
         options={{
           title: "Cadastro do Animal",
@@ -199,7 +212,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="OpsCadastro"
+        name='OpsCadastro'
         component={OpsCadastro}
         options={{
           title: "Cadastro",
