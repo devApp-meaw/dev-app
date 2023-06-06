@@ -29,7 +29,7 @@ const createUserDocument = async (user, additionalData) => {
 
   if (!snapshot.exists) {
     const { email } = user;
-    const { fullName, age, state, city, address, telephone, userName } =
+    const { fullName, age, state, city, address, telephone, userName, imageBase64 } =
       additionalData;
 
     try {
@@ -43,6 +43,7 @@ const createUserDocument = async (user, additionalData) => {
         telephone,
         userName,
         userId,
+        imageBase64,
         createdAt: new Date(),
       });
     } catch (error) {
@@ -79,6 +80,7 @@ const AddAnimal = async (form_animal) => {
       acompanhamento_pos,
       sobre,
       adocao,
+      imageBase64
     } = form_animal;
 
     await firestore.collection("animals").add({
@@ -115,6 +117,7 @@ const AddAnimal = async (form_animal) => {
       },
       sobre: sobre,
       adocao: adocao,
+      imageBase64: imageBase64,
     });
     console.log("Animal adicionado.");
   } catch (error) {

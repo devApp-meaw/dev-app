@@ -46,10 +46,14 @@ const MyPets = ({ navigation }) => {
         renderItem={({ item }) => {
           const animalId = item.id;
           const especie = item.especie == "cachorro" ? "dog" : "cat";
-          const petImage =
+          var petImage =
             item.especie == "cachorro"
               ? require("../../assets/dog.jpg")
               : require("../../assets/cat.jpg");
+
+          if (typeof item.imageBase64 !== 'undefined') {
+            petImage = { uri: item.imageBase64 };
+          }
 
           return (
             <View style={styles.PetView}>
