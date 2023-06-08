@@ -35,7 +35,10 @@ const AnimalRegistrationSuccess = ({ navigation }) => {
       </View>
       <View style={AdotarButtonView}>
         <View style={styles.AdotarButtonView}>
-          <TouchableOpacity style={styles.StandardButton}>
+          <TouchableOpacity
+            style={styles.StandardButton}
+            onPress={() => navigation.navigate("MyPets")}
+          >
             <Text style={styles.AdotarButtonText}>MEUS PETS</Text>
           </TouchableOpacity>
         </View>

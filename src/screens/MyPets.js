@@ -48,8 +48,8 @@ const MyPets = ({ navigation }) => {
           const especie = item.especie == "cachorro" ? "dog" : "cat";
           var petImage =
             item.especie == "cachorro"
-              ? require("../../assets/dog.jpg")
-              : require("../../assets/cat.jpg");
+              ? require("../../assets/default_dog.jpg")
+              : require("../../assets/default_cat.jpg");
 
           if (typeof item.imageBase64 !== "undefined") {
             if (item.imageBase64 !== "") {

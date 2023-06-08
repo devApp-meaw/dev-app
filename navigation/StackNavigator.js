@@ -12,7 +12,6 @@ import MyPets from "../src/screens/MyPets";
 import AdoptPet from "../src/screens/AdoptPet";
 import { useSelector } from "react-redux";
 
-import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import MyPet from "../src/screens/MyPet";
@@ -172,9 +171,6 @@ const DrawerNavigator = () => {
 };
 
 const StackNavigator = () => {
-  let [fontsLoaded] = useFonts({
-    Courgette_400Regular,
-  });
   return (
     <Stack.Navigator
       screenOptions={{

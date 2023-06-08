@@ -1,57 +1,35 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Image,
-  ImageBackground,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
-import { firestore } from "../../firebase";
+import React from "react";
+import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 
 import { StyleSheet, SafeAreaView } from "react-native";
 
-import { useSelector } from "react-redux";
-
-import { useIsFocused } from "@react-navigation/native";
-
-import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const MyPet = ({ route, navigation }) => {
   const { pet } = route.params;
 
-  const { uid } = useSelector((state) => state.user.data);
-
-  console.log(uid);
-
-  const { AdotarButtonView, StandardButton, AdotarButtonText } = styles;
-
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const collectIdsAndDocs = (doc) => {
-    return { id: doc.id, ...doc.data() };
-  };
-
-  const getPost = async () => {
-    const snapshot = await firestore
-      .collection("users")
-      .where("userId", "==", uid)
-      .get();
-    const user = snapshot.docs.map(collectIdsAndDocs);
-    setUser(user[0]);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getPost();
-  }, []);
+  const {
+    petImageStyle,
+    EditIconView,
+    EditIcon,
+    BackgroundImageView,
+    ButtonOnImage,
+    PetNameText,
+    DescriptionTitleText,
+    DescriptionText,
+    DescriptionView,
+    DescriptionRowView,
+    ButtonRow,
+    container,
+    StandardButton,
+    ButtonText,
+    FlatLine,
+  } = styles;
 
   var petImage =
     pet.especie == "cachorro"
-      ? require("../../assets/dog.jpg")
-      : require("../../assets/cat.jpg");
+      ? require("../../assets/default_dog.jpg")
+      : require("../../assets/default_cat.jpg");
 
   if (typeof pet.imageBase64 !== "undefined") {
     if (pet.imageBase64 !== "") {
@@ -177,182 +155,118 @@ const MyPet = ({ route, navigation }) => {
     temperamento: temperamentoText,
     precisa: precisaText,
     exigencias: exigenciasText,
+    localizacao: pet.endereco,
     sobre: pet.sobre,
   };
 
   return (
-    <>
-      {!isLoading ? (
-        <SafeAreaView>
-          <ImageBackground style={styles.petImageStyle} source={petImage}>
-            <View style={styles.BackgroundImageView}>
-              <View style={styles.ButtonOnImage}>
-                <TouchableOpacity>
-                  <View style={styles.EditIconView}>
-                    <MaterialIcons
-                      style={styles.EditIcon}
-                      name="edit"
-                      size={24}
-                      color="black"
-                    />
-                  </View>
-                </TouchableOpacity>
+    <SafeAreaView>
+      <ImageBackground style={petImageStyle} source={petImage}>
+        <View style={BackgroundImageView}>
+          <View style={ButtonOnImage}>
+            <TouchableOpacity>
+              <View style={EditIconView}>
+                <MaterialIcons
+                  style={EditIcon}
+                  name="edit"
+                  size={24}
+                  color="black"
+                />
               </View>
-            </View>
-          </ImageBackground>
-          <View style={styles.container}>
-            <View>
-              <Text style={styles.PetNameText}>{petInfo.nome}</Text>
-            </View>
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>SEXO</Text>
-                <Text style={styles.DescriptionText}>{petInfo.sexo}</Text>
-              </View>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>PORTE</Text>
-                <Text style={styles.DescriptionText}>{petInfo.porte}</Text>
-              </View>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>IDADE</Text>
-                <Text style={styles.DescriptionText}>{petInfo.idade}</Text>
-              </View>
-            </View>
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>LOCALIZAÇÃO</Text>
-                <Text style={styles.DescriptionText}>{user.address}</Text>
-              </View>
-            </View>
-            <View style={styles.FlatLine} />
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>CASTRADO</Text>
-                <Text style={styles.DescriptionText}>{petInfo.castrado}</Text>
-              </View>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>VERMIFUGADO</Text>
-                <Text style={styles.DescriptionText}>
-                  {petInfo.vermifugado}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>VACINADO</Text>
-                <Text style={styles.DescriptionText}>{petInfo.vacinado}</Text>
-              </View>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>DOENÇAS</Text>
-                <Text style={styles.DescriptionText}>{petInfo.doencas}</Text>
-              </View>
-            </View>
-            <View style={styles.FlatLine} />
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>TEMPERAMENTO</Text>
-                <Text style={styles.DescriptionText}>
-                  {petInfo.temperamento}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.FlatLine} />
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>
-                  {pet.nome} PRECISA DE
-                </Text>
-                <Text style={styles.DescriptionText}>{petInfo.precisa}</Text>
-              </View>
-            </View>
-            <View style={styles.FlatLine} />
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>
-                  EXIGÊNCIAS DO DOADOR
-                </Text>
-                <Text style={styles.DescriptionText}>{petInfo.exigencias}</Text>
-              </View>
-            </View>
-            <View style={styles.FlatLine} />
-            <View style={styles.DescriptionRowView}>
-              <View style={styles.DescriptionView}>
-                <Text style={styles.DescriptionTitleText}>
-                  MAIS SOBRE {pet.nome}
-                </Text>
-                <Text style={styles.DescriptionText}>{petInfo.sobre}</Text>
-              </View>
-            </View>
-            <View style={styles.ButtonRow}>
-              <TouchableOpacity style={styles.StandardButton}>
-                <Text style={styles.ButtonText}>VER INTERESSADOS</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.StandardButton}>
-                <Text style={styles.ButtonText}>REMOVER PET</Text>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
-        </SafeAreaView>
-      ) : (
-        <View></View>
-      )}
-    </>
+        </View>
+      </ImageBackground>
+      <View style={container}>
+        <View>
+          <Text style={PetNameText}>{petInfo.nome}</Text>
+        </View>
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>SEXO</Text>
+            <Text style={DescriptionText}>{petInfo.sexo}</Text>
+          </View>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>PORTE</Text>
+            <Text style={DescriptionText}>{petInfo.porte}</Text>
+          </View>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>IDADE</Text>
+            <Text style={DescriptionText}>{petInfo.idade}</Text>
+          </View>
+        </View>
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>LOCALIZAÇÃO</Text>
+            <Text style={DescriptionText}>{petInfo.localizacao}</Text>
+          </View>
+        </View>
+        <View style={FlatLine} />
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>CASTRADO</Text>
+            <Text style={DescriptionText}>{petInfo.castrado}</Text>
+          </View>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>VERMIFUGADO</Text>
+            <Text style={DescriptionText}>{petInfo.vermifugado}</Text>
+          </View>
+        </View>
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>VACINADO</Text>
+            <Text style={DescriptionText}>{petInfo.vacinado}</Text>
+          </View>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>DOENÇAS</Text>
+            <Text style={DescriptionText}>{petInfo.doencas}</Text>
+          </View>
+        </View>
+        <View style={FlatLine} />
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>TEMPERAMENTO</Text>
+            <Text style={DescriptionText}>{petInfo.temperamento}</Text>
+          </View>
+        </View>
+        <View style={FlatLine} />
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>{pet.nome} PRECISA DE</Text>
+            <Text style={DescriptionText}>{petInfo.precisa}</Text>
+          </View>
+        </View>
+        <View style={FlatLine} />
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>EXIGÊNCIAS DO DOADOR</Text>
+            <Text style={DescriptionText}>{petInfo.exigencias}</Text>
+          </View>
+        </View>
+        <View style={FlatLine} />
+        <View style={DescriptionRowView}>
+          <View style={DescriptionView}>
+            <Text style={DescriptionTitleText}>MAIS SOBRE {pet.nome}</Text>
+            <Text style={DescriptionText}>{petInfo.sobre}</Text>
+          </View>
+        </View>
+        <View style={ButtonRow}>
+          <TouchableOpacity style={StandardButton}>
+            <Text style={ButtonText}>VER INTERESSADOS</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={StandardButton}>
+            <Text style={ButtonText}>REMOVER PET</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  PetView: {
-    width: "90%",
-    alignSelf: "center",
-    marginTop: 16,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 3.84,
-    elevation: 5,
-    borderRadius: 4,
-  },
-
-  NameView: {
-    flexDirection: "row",
-    height: 35,
-    alignItems: "center",
-    borderTopLeftRadius: 4,
-    borderTopEndRadius: 4,
-    backgroundColor: "#cfe9e5",
-  },
-
-  NameText: {
-    paddingLeft: 8,
-    fontSize: 16,
-    color: "#434343",
-  },
-
   petImageStyle: {
     width: "100%",
     height: 200,
-  },
-
-  DetailsView: {
-    height: 55,
-    justifyContent: "center",
-    alignItems: "center",
-    borderBottomLeftRadius: 4,
-    borderBottomEndRadius: 4,
-  },
-
-  DetailsText: {
-    textAlign: "center",
-    color: "#757575",
-  },
-
-  NotificationIcon: {
-    marginLeft: "auto",
-    marginRight: 10,
   },
   EditIconView: {
     borderRadius: 100,
@@ -369,22 +283,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 2,
   },
-
   EditIcon: {
     color: "#434343",
   },
-
   BackgroundImageView: {
     height: 225,
   },
-
   ButtonOnImage: {
     alignSelf: "flex-end",
     flex: 1,
     justifyContent: "flex-end",
     paddingRight: 24,
   },
-
   PetNameText: {
     fontSize: 16,
     color: "#434343",

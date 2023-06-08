@@ -88,6 +88,7 @@ const AddAnimal = async (form_animal) => {
       acompanhamento_pos,
       sobre,
       adocao,
+      endereco,
       imageBase64,
     } = form_animal;
 
@@ -125,6 +126,7 @@ const AddAnimal = async (form_animal) => {
       },
       sobre: sobre,
       adocao: adocao,
+      endereco: endereco,
       imageBase64: imageBase64,
     });
     console.log("Animal adicionado.");

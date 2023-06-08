@@ -6,12 +6,18 @@ import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
 import UserInput from "../components/UserInput";
 import { Divider, Button } from "react-native-paper";
-import { StyleSheet, SafeAreaView, ScrollView, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  Image,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Checkbox, RadioButton } from "react-native-paper";
 import { useSelector } from "react-redux";
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 const AnimalRegistration = ({ navigation }) => {
   const stateUser = useSelector((state) => state.user);
@@ -60,41 +66,43 @@ const AnimalRegistration = ({ navigation }) => {
   const [saudeBox, setSaudeBox] = useState(false);
   const [objetosBox, setObjetosBox] = useState(false);
 
+  const [adocaoButton, setAdocaoButton] = useState(null);
+
   const [acompanhamentoButton, setAcompanhamentoButton] = useState(null);
 
   const [nomeText, setNomeText] = useState("");
   const [doencasText, setDoencasText] = useState("");
   const [sobreText, setSobreText] = useState("");
- 
+  const [enderecoText, setEnderecoText] = useState("");
+
   const [imageBase64, setImageBase64] = useState("");
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [3, 3],
-        quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
     });
 
     console.log(result);
 
     if (!result.canceled) {
-        //setImage(result.assets[0].uri);
+      //setImage(result.assets[0].uri);
 
-        var imguri = result.assets[0].uri;
-        const fsRead = await FileSystem.readAsStringAsync(imguri, {
-          encoding: "base64",
-        });
+      var imguri = result.assets[0].uri;
+      const fsRead = await FileSystem.readAsStringAsync(imguri, {
+        encoding: "base64",
+      });
 
-        const base64Img = `data:img/png;base64,${fsRead}`;
-        //console.log(base64Img);
-        setImage(base64Img);
-        setImageBase64(base64Img);
-        //console.log("deu bao");
+      const base64Img = `data:img/png;base64,${fsRead}`;
+      //console.log(base64Img);
+      setImage(base64Img);
+      setImageBase64(base64Img);
+      //console.log("deu bao");
     }
-
   };
 
   const handleAddAnimal = () => {
@@ -123,10 +131,10 @@ const AnimalRegistration = ({ navigation }) => {
       visitas: visitasBox,
       acompanhamento_pos: acompanhamentoButton,
       sobre: sobreText,
-      adocao: true,
+      adocao: adocaoButton === "adocao",
+      endereco: enderecoText,
       imageBase64: imageBase64,
     };
- 
 
     console.log(AddAnimal);
     return AddAnimal(form_animal)
@@ -159,12 +167,25 @@ const AnimalRegistration = ({ navigation }) => {
             <View style={Row}>
               <Text style={Title}>Fotos do animal</Text>
             </View>
-            <Button style={ImageUploadBox} onPress={pickImage}>
-              <Icon name="plus-circle" style={ImageUploadIcon} />
-              <Text style={ImageUploadText}>adicionar foto</Text>
-            </Button>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <TouchableOpacity style={ImageUploadBox} onPress={pickImage}>
+              <View style={styles.ImageUploadView}>
+                <Icon name="plus-circle" style={ImageUploadIcon} />
+                <Text style={ImageUploadText}>adicionar foto</Text>
+              </View>
+            </TouchableOpacity>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {image && (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              )}
             </View>
           </View>
           <View style={TextField}>
@@ -560,6 +581,45 @@ const AnimalRegistration = ({ navigation }) => {
           </View>
           <View style={TextField}>
             <View style={Row}>
+              <Text style={Title}>DISPONÍVEL PARA ADOÇÃO IMEDIATA</Text>
+            </View>
+            <View style={Row}>
+              <View style={CheckboxContainer}>
+                <RadioButton.Android
+                  style={styles.checkbox}
+                  value="adocao"
+                  status={adocaoButton === "adocao" ? "checked" : "unchecked"}
+                  onPress={() => setAdocaoButton("adocao")}
+                />
+                <Text style={CheckboxText}>Sim</Text>
+              </View>
+              <View style={CheckboxContainer}>
+                <RadioButton.Android
+                  style={styles.checkbox}
+                  value="nao_adocao"
+                  status={
+                    adocaoButton === "nao_adocao" ? "checked" : "unchecked"
+                  }
+                  onPress={() => setAdocaoButton("nao_adocao")}
+                />
+                <Text style={CheckboxText}>Não</Text>
+              </View>
+            </View>
+          </View>
+          <View style={TextField}>
+            <View style={Row}>
+              <Text style={Title}>LOCALIZAÇÃO DO ANIMAL</Text>
+            </View>
+            <View style={styles.TextRow}>
+              <TextInput
+                label={"sobreLabel"}
+                value={enderecoText}
+                placeholder={"Compartilhe o endereço em que está o animal"}
+                onChangeText={(text) => setEnderecoText(text)}
+                style={InputText}
+              />
+            </View>
+            <View style={Row}>
               <Text style={Title}>SOBRE O ANIMAL</Text>
             </View>
             <View style={styles.TextRow}>
@@ -732,6 +792,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     borderBottomWidth: 0.8,
     borderBottomColor: "#e6e7e8",
+  },
+  ImageUploadView: {
+    flexDirection: "row",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "5%",
   },
 });
 
