@@ -798,7 +798,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "5%",
+    gap: 15,
   },
 });
 

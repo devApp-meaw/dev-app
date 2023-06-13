@@ -23,7 +23,7 @@ const DrawerNavigator = () => {
   const user = useSelector((state) => state.user);
   return (
     <Drawer.Navigator
-      initialRouteName="LoadingPage"
+      initialRouteName="FrontPage"
       screenOptions={{
         drawerPosition: "left",
       }}

@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   },
   DescriptionRowView: {
     flexDirection: "row",
-    gap: "50%",
+    gap: 15,
     marginVertical: 8,
   },
   ButtonRow: {
