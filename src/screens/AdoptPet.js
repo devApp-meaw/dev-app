@@ -66,8 +66,8 @@ const AdoptPet = ({ navigation }) => {
           const animalId = item.id;
           const petImage =
             item.especie == "cachorro"
-              ? require("../../assets/dog.jpg")
-              : require("../../assets/cat.jpg");
+              ? require("../../assets/default_dog.jpg")
+              : require("../../assets/default_cat.jpg");
 
           return (
             <View style={styles.PetView}>

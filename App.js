@@ -7,7 +7,17 @@ import { Provider, useSelector } from "react-redux";
 import store from "./src/redux/store";
 import StackNavigator from "./navigation/StackNavigator.js";
 
+import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
+
 const App = () => {
+  let [fontsLoaded] = useFonts({
+    Courgette_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
+
   return (
     <Provider store={store}>
       <PaperProvider>
