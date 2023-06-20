@@ -10,6 +10,7 @@ import FrontPage from "../src/screens/FrontPage";
 import LoadingPage from "../src/screens/LoadingPage";
 import MyPets from "../src/screens/MyPets";
 import AdoptPet from "../src/screens/AdoptPet";
+import { Logout } from "../src/screens/Logout";
 import { useSelector } from "react-redux";
 
 import { AntDesign } from "@expo/vector-icons";
@@ -27,10 +28,11 @@ const DrawerNavigator = () => {
   const user = useSelector((state) => state.user);
   return (
     <Drawer.Navigator
-      initialRouteName="FrontPage"
+      initialRouteName='FrontPage'
       screenOptions={{
         drawerPosition: "left",
       }}
+      drawerContent={(props) => <Logout {...props} />}
     >
       {user.isLogged ? (
         <>
@@ -51,7 +53,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="MyPets"
+            name='MyPets'
             component={MyPets}
             options={{
               title: "Meus Pets",
@@ -67,15 +69,15 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
           />
           <Drawer.Screen
-            name="AdoptPet"
+            name='AdoptPet'
             component={AdoptPet}
             options={{
               title: "Adotar",
@@ -91,9 +93,9 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
@@ -126,7 +128,7 @@ const DrawerNavigator = () => {
       ) : (
         <>
           <Drawer.Screen
-            name="LoadingPage"
+            name='LoadingPage'
             component={LoadingPage}
             options={{
               title: "Loading",
@@ -144,7 +146,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="FrontPage"
+            name='FrontPage'
             component={FrontPage}
             options={{
               title: "Início",
@@ -161,7 +163,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="Login"
+            name='Login'
             component={Login}
             options={{
               title: "Login",
@@ -206,12 +208,12 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name="DrawerNavigator"
+        name='DrawerNavigator'
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="AnimalRegistrationSuccess"
+        name='AnimalRegistrationSuccess'
         component={AnimalRegistrationSuccess}
         options={{
           title: "Cadastro do Animal",
@@ -225,7 +227,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="OpsCadastro"
+        name='OpsCadastro'
         component={OpsCadastro}
         options={{
           title: "Cadastro",
@@ -239,7 +241,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="MyPet"
+        name='MyPet'
         component={MyPet}
         options={({ route }) => ({
           title: route.params.pet.nome,
@@ -253,9 +255,9 @@ const StackNavigator = () => {
           headerRight: () => (
             <Ionicons
               style={{ marginRight: 15, color: "#434343" }}
-              name="share-social"
+              name='share-social'
               size={24}
-              color="black"
+              color='black'
             />
           ),
         })}
