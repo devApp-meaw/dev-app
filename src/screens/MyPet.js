@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -161,6 +161,7 @@ const MyPet = ({ route, navigation }) => {
 
   return (
     <SafeAreaView>
+     <ScrollView style={styles.scrollView}>
       <ImageBackground style={petImageStyle} source={petImage}>
         <View style={BackgroundImageView}>
           <View style={ButtonOnImage}>
@@ -251,7 +252,14 @@ const MyPet = ({ route, navigation }) => {
           </View>
         </View>
         <View style={ButtonRow}>
-          <TouchableOpacity style={StandardButton}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("InterestsOnPet", {
+                interests: pet.interests,
+              })
+            }
+            style={StandardButton}
+          >
             <Text style={ButtonText}>VER INTERESSADOS</Text>
           </TouchableOpacity>
           <TouchableOpacity style={StandardButton}>
@@ -259,6 +267,7 @@ const MyPet = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+     </ScrollView>
     </SafeAreaView>
   );
 };

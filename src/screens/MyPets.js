@@ -13,8 +13,6 @@ import { Ionicons } from "@expo/vector-icons";
 const MyPets = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
 
-  console.log(uid);
-
   const { AdotarButtonView, StandardButton, AdotarButtonText } = styles;
 
   const [animals, setAnimals] = useState(null);
@@ -31,11 +29,11 @@ const MyPets = ({ navigation }) => {
       .where("userId", "==", uid)
       .get();
     const animals = snapshot.docs.map(collectIdsAndDocs);
+
     setAnimals(animals);
   };
 
   useEffect(() => {
-    console.log("oiesds");
     getPost();
   }, [isFocused]);
 
@@ -75,7 +73,9 @@ const MyPets = ({ navigation }) => {
                   <Image style={styles.petImageStyle} source={petImage}></Image>
                 </View>
                 <View style={styles.DetailsView}>
-                  <Text style={styles.DetailsText}>X NOVOS INTERESSADOS</Text>
+                  <Text style={styles.DetailsText}>
+                    {item.interests.length} NOVOS INTERESSADOS
+                  </Text>
                   <Text style={styles.DetailsText}>APADRINHAMENTO | AJUDA</Text>
                 </View>
               </TouchableOpacity>

@@ -128,6 +128,7 @@ const AddAnimal = async (form_animal) => {
       adocao: adocao,
       endereco: endereco,
       imageBase64: imageBase64,
+      interests: [],
     });
     console.log("Animal adicionado.");
   } catch (error) {
