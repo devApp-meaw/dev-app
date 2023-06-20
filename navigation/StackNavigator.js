@@ -15,6 +15,10 @@ import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import MyPet from "../src/screens/MyPet";
+import InterestsOnPet from "../src/screens/InterestsOnPet";
+import Chat from "../src/screens/Chat";
+import FinalizarAdocao from "../src/screens/FinalizarAdocao";
+import ProcessoFinalizado from "../src/screens/ProcessoFinalizado";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -30,22 +34,6 @@ const DrawerNavigator = () => {
     >
       {user.isLogged ? (
         <>
-          <Drawer.Screen
-            name="RegisterUser"
-            component={RegisterUser}
-            options={{
-              title: "Cadastro Pessoal",
-              headerShadowVisible: true,
-              headerTitleAlign: "left",
-              headerStyle: {
-                backgroundColor: "#cfe9e5",
-              },
-              headerTintColor: "#434343",
-              headerTitleStyle: {
-                fontSize: 20,
-              },
-            }}
-          />
           <Drawer.Screen
             name="AnimalRegistration"
             component={AnimalRegistration}
@@ -110,6 +98,30 @@ const DrawerNavigator = () => {
               ),
             }}
           />
+          <Drawer.Screen
+            name="Chat"
+            component={Chat}
+            options={{
+              title: "Chat",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#88c9bf",
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+              headerRight: () => (
+                <AntDesign
+                  style={{ marginRight: 15 }}
+                  name="search1"
+                  size={24}
+                  color="black"
+                />
+              ),
+            }}
+          />
         </>
       ) : (
         <>
@@ -153,6 +165,22 @@ const DrawerNavigator = () => {
             component={Login}
             options={{
               title: "Login",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#cfe9e5",
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+            }}
+          />
+          <Drawer.Screen
+            name="RegisterUser"
+            component={RegisterUser}
+            options={{
+              title: "Cadastro Pessoal",
               headerShadowVisible: true,
               headerTitleAlign: "left",
               headerStyle: {
@@ -231,6 +259,56 @@ const StackNavigator = () => {
             />
           ),
         })}
+      />
+      <Stack.Screen
+        name="InterestsOnPet"
+        component={InterestsOnPet}
+        options={({ route }) => ({
+          title: "Interessados",
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <AntDesign
+              style={{ marginRight: 15 }}
+              name="search1"
+              size={24}
+              color="black"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="FinalizarAdocao"
+        component={FinalizarAdocao}
+        options={{
+          title: "Finalizar adoção",
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ProcessoFinalizado"
+        component={ProcessoFinalizado}
+        options={{
+          title: "Finalizar processo",
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+        }}
       />
     </Stack.Navigator>
   );

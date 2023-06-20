@@ -21,7 +21,6 @@ import * as FileSystem from "expo-file-system";
 
 const AnimalRegistration = ({ navigation }) => {
   const stateUser = useSelector((state) => state.user);
-  console.log(stateUser.isLogged);
 
   const {
     Row,
@@ -87,8 +86,6 @@ const AnimalRegistration = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       //setImage(result.assets[0].uri);
 
@@ -98,10 +95,8 @@ const AnimalRegistration = ({ navigation }) => {
       });
 
       const base64Img = `data:img/png;base64,${fsRead}`;
-      //console.log(base64Img);
       setImage(base64Img);
       setImageBase64(base64Img);
-      //console.log("deu bao");
     }
   };
 
@@ -136,7 +131,6 @@ const AnimalRegistration = ({ navigation }) => {
       imageBase64: imageBase64,
     };
 
-    console.log(AddAnimal);
     return AddAnimal(form_animal)
       .then(() => navigation.navigate("AnimalRegistrationSuccess"))
       .catch((error) => alert(error.message));

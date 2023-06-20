@@ -10,12 +10,19 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { AntDesign } from "@expo/vector-icons";
 
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 
 const AdoptPet = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
-
-  console.log(uid);
 
   const { AdotarButtonView, StandardButton, AdotarButtonText } = styles;
 
@@ -28,31 +35,25 @@ const AdoptPet = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   const getPost = async () => {
-    const q = query(
+    const queryAnimals = query(
       collection(firestore, "animals"),
       where("userId", "!=", uid),
       where("adocao", "==", true)
     );
-    querySnapshot = await getDocs(q);
+    queryAnimalsSnapshot = await getDocs(queryAnimals);
 
-    const snapshot = await firestore
-      .collection("animals")
-      .where("userId", "!=", uid)
-      .get();
-    //const animals = snapshot.docs.map(collectIdsAndDocs);
-    const animals = querySnapshot.docs.map(collectIdsAndDocs);
+    const animals = queryAnimalsSnapshot.docs.map(collectIdsAndDocs);
+
     setAnimals(animals);
   };
 
   useEffect(() => {
-    console.log("oiesds");
     getPost();
   }, [isFocused]);
 
-  const handleInterestPet = (animalId) => {
-    firestore.collection("interest").add({
-      userId: uid,
-      animalId: animalId,
+  const handleInterestPet = async (animalId) => {
+    await updateDoc(doc(firestore, "animals", animalId), {
+      interests: arrayUnion(uid),
     });
 
     console.log("Interesse adicionado");
@@ -84,7 +85,9 @@ const AdoptPet = ({ navigation }) => {
                 <Image style={styles.petImageStyle} source={petImage}></Image>
               </View>
               <View style={styles.DetailsView}>
-                <Text style={styles.DetailsText}>X NOVOS INTERESSADOS</Text>
+                <Text style={styles.DetailsText}>
+                  {item.interests.length} INTERESSADOS
+                </Text>
                 <Text style={styles.DetailsText}>APADRINHAMENTO | AJUDA</Text>
               </View>
             </View>

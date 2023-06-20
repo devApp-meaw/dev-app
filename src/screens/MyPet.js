@@ -251,7 +251,14 @@ const MyPet = ({ route, navigation }) => {
           </View>
         </View>
         <View style={ButtonRow}>
-          <TouchableOpacity style={StandardButton}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("InterestsOnPet", {
+                interests: pet.interests,
+              })
+            }
+            style={StandardButton}
+          >
             <Text style={ButtonText}>VER INTERESSADOS</Text>
           </TouchableOpacity>
           <TouchableOpacity style={StandardButton}>
