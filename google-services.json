@@ -1,0 +1,39 @@
+{
+    "project_info": {
+      "project_number": "388750871006",
+      "project_id": "meow-auth-c73ed",
+      "storage_bucket": "meow-auth-c73ed.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:388750871006:android:7601c06b1a2ad85b02b54f",
+          "android_client_info": {
+            "package_name": "com.meaw.tests"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "388750871006-cpeq89i8dosursh2a6mmei4hm647j747.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyCScwfJmPfPgQ3RibdYLH_24mHXRtfBPAQ"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "388750871006-cpeq89i8dosursh2a6mmei4hm647j747.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
