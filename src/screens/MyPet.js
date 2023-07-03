@@ -148,6 +148,7 @@ const MyPet = ({ route, navigation }) => {
     sexo: pet.sexo == "macho" ? "Macho" : "Fêmea",
     porte: pet.porte.charAt(0).toUpperCase() + pet.porte.slice(1),
     idade: pet.idade.charAt(0).toUpperCase() + pet.idade.slice(1),
+    adocao: pet.adocao ? "Sim" : "Não",
     castrado: pet.saude.castrado ? "Sim" : "Não",
     vermifugado: pet.saude.vermifugado ? "Sim" : "Não",
     vacinado: pet.saude.vacinado ? "Sim" : "Não",
@@ -161,113 +162,122 @@ const MyPet = ({ route, navigation }) => {
 
   return (
     <SafeAreaView>
-     <ScrollView style={styles.scrollView}>
-      <ImageBackground style={petImageStyle} source={petImage}>
-        <View style={BackgroundImageView}>
-          <View style={ButtonOnImage}>
-            <TouchableOpacity>
-              <View style={EditIconView}>
-                <MaterialIcons
-                  style={EditIcon}
-                  name="edit"
-                  size={24}
-                  color="black"
-                />
-              </View>
+      <ScrollView style={styles.scrollView}>
+        <ImageBackground style={petImageStyle} source={petImage}>
+          <View style={BackgroundImageView}>
+            <View style={ButtonOnImage}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("EditPet", { pet: pet })}
+              >
+                <View style={EditIconView}>
+                  <MaterialIcons
+                    style={EditIcon}
+                    name="edit"
+                    size={24}
+                    color="black"
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ImageBackground>
+        <View style={container}>
+          <View>
+            <Text style={PetNameText}>{petInfo.nome}</Text>
+          </View>
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>SEXO</Text>
+              <Text style={DescriptionText}>{petInfo.sexo}</Text>
+            </View>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>PORTE</Text>
+              <Text style={DescriptionText}>{petInfo.porte}</Text>
+            </View>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>IDADE</Text>
+              <Text style={DescriptionText}>{petInfo.idade}</Text>
+            </View>
+          </View>
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>DISPONÍVEL PARA ADOÇÃO</Text>
+              <Text style={DescriptionText}>{petInfo.adocao}</Text>
+            </View>
+          </View>
+          <View style={FlatLine} />
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>LOCALIZAÇÃO</Text>
+              <Text style={DescriptionText}>{petInfo.localizacao}</Text>
+            </View>
+          </View>
+          <View style={FlatLine} />
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>CASTRADO</Text>
+              <Text style={DescriptionText}>{petInfo.castrado}</Text>
+            </View>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>VERMIFUGADO</Text>
+              <Text style={DescriptionText}>{petInfo.vermifugado}</Text>
+            </View>
+          </View>
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>VACINADO</Text>
+              <Text style={DescriptionText}>{petInfo.vacinado}</Text>
+            </View>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>DOENÇAS</Text>
+              <Text style={DescriptionText}>{petInfo.doencas}</Text>
+            </View>
+          </View>
+          <View style={FlatLine} />
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>TEMPERAMENTO</Text>
+              <Text style={DescriptionText}>{petInfo.temperamento}</Text>
+            </View>
+          </View>
+          <View style={FlatLine} />
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>{pet.nome} PRECISA DE</Text>
+              <Text style={DescriptionText}>{petInfo.precisa}</Text>
+            </View>
+          </View>
+          <View style={FlatLine} />
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>EXIGÊNCIAS DO DOADOR</Text>
+              <Text style={DescriptionText}>{petInfo.exigencias}</Text>
+            </View>
+          </View>
+          <View style={FlatLine} />
+          <View style={DescriptionRowView}>
+            <View style={DescriptionView}>
+              <Text style={DescriptionTitleText}>MAIS SOBRE {pet.nome}</Text>
+              <Text style={DescriptionText}>{petInfo.sobre}</Text>
+            </View>
+          </View>
+          <View style={ButtonRow}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("InterestsOnPet", {
+                  interests: pet.interests,
+                })
+              }
+              style={StandardButton}
+            >
+              <Text style={ButtonText}>VER INTERESSADOS</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={StandardButton}>
+              <Text style={ButtonText}>REMOVER PET</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </ImageBackground>
-      <View style={container}>
-        <View>
-          <Text style={PetNameText}>{petInfo.nome}</Text>
-        </View>
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>SEXO</Text>
-            <Text style={DescriptionText}>{petInfo.sexo}</Text>
-          </View>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>PORTE</Text>
-            <Text style={DescriptionText}>{petInfo.porte}</Text>
-          </View>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>IDADE</Text>
-            <Text style={DescriptionText}>{petInfo.idade}</Text>
-          </View>
-        </View>
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>LOCALIZAÇÃO</Text>
-            <Text style={DescriptionText}>{petInfo.localizacao}</Text>
-          </View>
-        </View>
-        <View style={FlatLine} />
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>CASTRADO</Text>
-            <Text style={DescriptionText}>{petInfo.castrado}</Text>
-          </View>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>VERMIFUGADO</Text>
-            <Text style={DescriptionText}>{petInfo.vermifugado}</Text>
-          </View>
-        </View>
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>VACINADO</Text>
-            <Text style={DescriptionText}>{petInfo.vacinado}</Text>
-          </View>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>DOENÇAS</Text>
-            <Text style={DescriptionText}>{petInfo.doencas}</Text>
-          </View>
-        </View>
-        <View style={FlatLine} />
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>TEMPERAMENTO</Text>
-            <Text style={DescriptionText}>{petInfo.temperamento}</Text>
-          </View>
-        </View>
-        <View style={FlatLine} />
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>{pet.nome} PRECISA DE</Text>
-            <Text style={DescriptionText}>{petInfo.precisa}</Text>
-          </View>
-        </View>
-        <View style={FlatLine} />
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>EXIGÊNCIAS DO DOADOR</Text>
-            <Text style={DescriptionText}>{petInfo.exigencias}</Text>
-          </View>
-        </View>
-        <View style={FlatLine} />
-        <View style={DescriptionRowView}>
-          <View style={DescriptionView}>
-            <Text style={DescriptionTitleText}>MAIS SOBRE {pet.nome}</Text>
-            <Text style={DescriptionText}>{petInfo.sobre}</Text>
-          </View>
-        </View>
-        <View style={ButtonRow}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("InterestsOnPet", {
-                interests: pet.interests,
-              })
-            }
-            style={StandardButton}
-          >
-            <Text style={ButtonText}>VER INTERESSADOS</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={StandardButton}>
-            <Text style={ButtonText}>REMOVER PET</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-     </ScrollView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
