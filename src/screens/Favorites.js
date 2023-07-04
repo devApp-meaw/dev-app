@@ -21,43 +21,23 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 
-const AdoptPet = ({ navigation }) => {
+const Favorites = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
 
   const { AdotarButtonView, StandardButton, AdotarButtonText } = styles;
 
   const [animals, setAnimals] = useState(null);
-  const [interests, setInterests] = useState(null);
 
   const collectIdsAndDocs = (doc) => {
     return { id: doc.id, ...doc.data() };
   };
 
-  const collectIds = (doc) => {
-    return doc.id;
-  };
-
   const isFocused = useIsFocused();
 
-  const getInterests = async () => {
-    const queryInterests = query(
-      collection(firestore, "animals"),
-      where("interests", "array-contains", uid)
-    );
-    queryInterestsSnapshot = await getDocs(queryInterests);
-
-    const interestsNow = queryInterestsSnapshot.docs.map(collectIds);
-
-    setInterests(interestsNow);
-  };
-
   const getPost = async () => {
-    getInterests();
-
     const queryAnimals = query(
       collection(firestore, "animals"),
-      where("userId", "!=", uid),
-      where("adocao", "==", true)
+      where("interests", "array-contains", uid)
     );
     queryAnimalsSnapshot = await getDocs(queryAnimals);
 
@@ -69,14 +49,6 @@ const AdoptPet = ({ navigation }) => {
   useEffect(() => {
     getPost();
   }, [isFocused]);
-
-  const handleInterestPet = async (animalId) => {
-    await updateDoc(doc(firestore, "animals", animalId), {
-      interests: arrayUnion(uid),
-    });
-
-    console.log("Interesse adicionado");
-  };
 
   const handleUninterestPet = async (animalId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
@@ -91,6 +63,12 @@ const AdoptPet = ({ navigation }) => {
       <FlatList
         data={animals}
         renderItem={({ item }) => {
+          const animalInfo = {
+            sexo: item.sexo === "macho" ? "Macho" : "Fêmea",
+            endereco: item.endereco ? item.endereco : "Sem endereço",
+            idade: item.idade,
+            porte: item.porte === "medio" ? "Médio" : item.porte,
+          };
           const animalId = item.id;
           const petImage =
             item.especie == "cachorro"
@@ -104,40 +82,23 @@ const AdoptPet = ({ navigation }) => {
               >
                 <View style={styles.NameView}>
                   <Text style={styles.NameText}> {item.nome} </Text>
-                  {interests.includes(animalId) ? (
-                    <>
-                      <TouchableOpacity
-                        style={styles.HeartIcon}
-                        onPress={() => {
-                          {
-                            handleUninterestPet(animalId);
-                          }
-                        }}
-                      >
-                        <AntDesign name="heart" size={24} color="black" />
-                      </TouchableOpacity>
-                    </>
-                  ) : (
-                    <>
-                      <TouchableOpacity
-                        style={styles.HeartIcon}
-                        onPress={() => {
-                          handleInterestPet(animalId);
-                        }}
-                      >
-                        <AntDesign name="hearto" size={24} color="black" />
-                      </TouchableOpacity>
-                    </>
-                  )}
+                  <TouchableOpacity
+                    style={styles.HeartIcon}
+                    onPress={() => handleUninterestPet(animalId)}
+                  >
+                    <AntDesign name="heart" size={24} color="black" />
+                  </TouchableOpacity>
                 </View>
                 <View>
                   <Image style={styles.petImageStyle} source={petImage}></Image>
                 </View>
                 <View style={styles.DetailsView}>
-                  <Text style={styles.DetailsText}>
-                    {item.interests.length} INTERESSADOS
-                  </Text>
-                  <Text style={styles.DetailsText}>APADRINHAMENTO | AJUDA</Text>
+                  <View style={styles.Row}>
+                    <Text style={styles.DetailsText}>{animalInfo.sexo}</Text>
+                    <Text style={styles.DetailsText}>{animalInfo.idade}</Text>
+                    <Text style={styles.DetailsText}>{animalInfo.porte}</Text>
+                  </View>
+                  <Text style={styles.DetailsText}>{animalInfo.endereco}</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -173,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderTopLeftRadius: 4,
     borderTopEndRadius: 4,
-    backgroundColor: "#fee29b",
+    backgroundColor: "#88c9bf",
   },
 
   NameText: {
@@ -198,12 +159,22 @@ const styles = StyleSheet.create({
   DetailsText: {
     textAlign: "center",
     color: "#757575",
+    textTransform: "uppercase",
   },
 
   HeartIcon: {
     marginLeft: "auto",
     marginRight: 10,
   },
+
+  Row: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-evenly",
+    display: "flex",
+    marginBottom: 4,
+  },
 });
 
-export default AdoptPet;
+export default Favorites;

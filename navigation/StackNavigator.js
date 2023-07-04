@@ -22,6 +22,8 @@ import FinalizarAdocao from "../src/screens/FinalizarAdocao";
 import ProcessoFinalizado from "../src/screens/ProcessoFinalizado";
 import EditPet from "../src/screens/EditPet";
 import AnimalUpdateSuccess from "../src/screens/AnimalUpdateSuccess";
+import Favorites from "../src/screens/Favorites";
+import Pet from "../src/screens/Pet";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -87,6 +89,30 @@ const DrawerNavigator = () => {
               headerTitleAlign: "left",
               headerStyle: {
                 backgroundColor: "#ffd358",
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+              headerRight: () => (
+                <AntDesign
+                  style={{ marginRight: 15 }}
+                  name="search1"
+                  size={24}
+                  color="black"
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Favorites"
+            component={Favorites}
+            options={{
+              title: "Favoritos",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#88c9bf",
               },
               headerTintColor: "#434343",
               headerTitleStyle: {
@@ -259,6 +285,28 @@ const StackNavigator = () => {
       <Stack.Screen
         name="MyPet"
         component={MyPet}
+        options={({ route }) => ({
+          title: route.params.pet.nome,
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <Ionicons
+              style={{ marginRight: 15, color: "#434343" }}
+              name="share-social"
+              size={24}
+              color="black"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="Pet"
+        component={Pet}
         options={({ route }) => ({
           title: route.params.pet.nome,
           headerStyle: {
