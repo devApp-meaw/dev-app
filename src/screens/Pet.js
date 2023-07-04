@@ -1,12 +1,35 @@
 import React from "react";
 import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
 
+import { firestore } from "../../firebase";
+
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
+
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+
+import { useSelector } from "react-redux";
 
 import { MaterialIcons } from "@expo/vector-icons";
 
-const MyPet = ({ route, navigation }) => {
+const Pet = ({ route, navigation }) => {
+  const { uid } = useSelector((state) => state.user.data);
   const { pet } = route.params;
+
+  const handleInterestPet = async (animalId) => {
+    await updateDoc(doc(firestore, "animals", animalId), {
+      interests: arrayUnion(uid),
+    });
+
+    console.log("Interesse adicionado");
+  };
+
+  const handleUninterestPet = async (animalId) => {
+    await updateDoc(doc(firestore, "animals", animalId), {
+      interests: arrayRemove(uid),
+    });
+
+    console.log("Interesse removido");
+  };
 
   const {
     petImageStyle,
@@ -148,7 +171,6 @@ const MyPet = ({ route, navigation }) => {
     sexo: pet.sexo == "macho" ? "Macho" : "Fêmea",
     porte: pet.porte.charAt(0).toUpperCase() + pet.porte.slice(1),
     idade: pet.idade.charAt(0).toUpperCase() + pet.idade.slice(1),
-    adocao: pet.adocao ? "Sim" : "Não",
     castrado: pet.saude.castrado ? "Sim" : "Não",
     vermifugado: pet.saude.vermifugado ? "Sim" : "Não",
     vacinado: pet.saude.vacinado ? "Sim" : "Não",
@@ -164,22 +186,7 @@ const MyPet = ({ route, navigation }) => {
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <ImageBackground style={petImageStyle} source={petImage}>
-          <View style={BackgroundImageView}>
-            <View style={ButtonOnImage}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("EditPet", { pet: pet })}
-              >
-                <View style={EditIconView}>
-                  <MaterialIcons
-                    style={EditIcon}
-                    name="edit"
-                    size={24}
-                    color="black"
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <View style={BackgroundImageView}></View>
         </ImageBackground>
         <View style={container}>
           <View>
@@ -199,13 +206,6 @@ const MyPet = ({ route, navigation }) => {
               <Text style={DescriptionText}>{petInfo.idade}</Text>
             </View>
           </View>
-          <View style={DescriptionRowView}>
-            <View style={DescriptionView}>
-              <Text style={DescriptionTitleText}>DISPONÍVEL PARA ADOÇÃO</Text>
-              <Text style={DescriptionText}>{petInfo.adocao}</Text>
-            </View>
-          </View>
-          <View style={FlatLine} />
           <View style={DescriptionRowView}>
             <View style={DescriptionView}>
               <Text style={DescriptionTitleText}>LOCALIZAÇÃO</Text>
@@ -261,21 +261,37 @@ const MyPet = ({ route, navigation }) => {
               <Text style={DescriptionText}>{petInfo.sobre}</Text>
             </View>
           </View>
-          <View style={ButtonRow}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("InterestsOnPet", {
-                  interests: pet.interests,
-                })
-              }
-              style={StandardButton}
-            >
-              <Text style={ButtonText}>VER INTERESSADOS</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={StandardButton}>
-              <Text style={ButtonText}>REMOVER PET</Text>
-            </TouchableOpacity>
-          </View>
+          {pet.interests.includes(uid) ? (
+            <>
+              <View style={ButtonRow}>
+                <TouchableOpacity
+                  onPress={() => {
+                    {
+                      handleUninterestPet(pet.id);
+                    }
+                  }}
+                  style={StandardButton}
+                >
+                  <Text style={ButtonText}>TIRAR INTERESSE</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <>
+              <View style={ButtonRow}>
+                <TouchableOpacity
+                  onPress={() => {
+                    {
+                      handleInterestPet(pet.id);
+                    }
+                  }}
+                  style={StandardButton}
+                >
+                  <Text style={ButtonText}>DEMONSTRAR INTERESSE</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -348,7 +364,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 4,
     elevation: 3,
-    width: "45%",
+    width: "65%",
     height: 50,
     shadowColor: "black",
     shadowOffset: { width: -2, height: 2 },
@@ -365,4 +381,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyPet;
+export default Pet;

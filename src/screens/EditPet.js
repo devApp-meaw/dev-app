@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { AddAnimal } from "../../firebase";
+import { UpdateAnimal } from "../../firebase";
 
 import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
@@ -19,9 +19,10 @@ import { useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 
-const AnimalRegistration = ({ navigation }) => {
+const EditPet = ({ route, navigation }) => {
+  const { pet } = route.params;
+  const originalImage = pet.imageBase64;
   const stateUser = useSelector((state) => state.user);
-  console.log(stateUser.isLogged);
 
   const {
     Row,
@@ -40,64 +41,63 @@ const AnimalRegistration = ({ navigation }) => {
     InputText,
   } = styles;
 
-  const [especieButton, setEspecieButton] = useState(null);
-  const [sexoButton, setSexoButton] = useState(null);
-  const [porteButton, setPorteButton] = useState(null);
-  const [idadeButton, setIdadeButton] = useState(null);
+  const [especieButton, setEspecieButton] = useState(pet.especie);
+  const [sexoButton, setSexoButton] = useState(pet.sexo);
+  const [porteButton, setPorteButton] = useState(pet.porte);
+  const [idadeButton, setIdadeButton] = useState(pet.idade);
 
-  const [brincalhaoBox, setBrincalhaoBox] = useState(false);
-  const [timidoBox, setTimidoBox] = useState(false);
-  const [calmoBox, setCalmoBox] = useState(false);
-  const [guardaBox, setGuardaBox] = useState(false);
-  const [amorosoBox, setAmorosoBox] = useState(false);
-  const [preguicosoBox, setPreguicosoBox] = useState(false);
+  const [brincalhaoBox, setBrincalhaoBox] = useState(
+    pet.temperamento.brincalhao
+  );
+  const [timidoBox, setTimidoBox] = useState(pet.temperamento.timido);
+  const [calmoBox, setCalmoBox] = useState(pet.temperamento.calmo);
+  const [guardaBox, setGuardaBox] = useState(pet.temperamento.guarda);
+  const [amorosoBox, setAmorosoBox] = useState(pet.temperamento.amoroso);
+  const [preguicosoBox, setPreguicosoBox] = useState(
+    pet.temperamento.preguicoso
+  );
 
-  const [vacinadoBox, setVacinadoBox] = useState(false);
-  const [vermifugadoBox, setVermifugadoBox] = useState(false);
-  const [castradoBox, setCastradoBox] = useState(false);
-  const [doenteBox, setDoenteBox] = useState(false);
+  const [vacinadoBox, setVacinadoBox] = useState(pet.saude.vacinado);
+  const [vermifugadoBox, setVermifugadoBox] = useState(pet.saude.vermifugado);
+  const [castradoBox, setCastradoBox] = useState(pet.saude.castrado);
+  const [doenteBox, setDoenteBox] = useState(pet.saude.doente);
 
-  const [termoBox, setTermoBox] = useState(false);
-  const [auxilioBox, setAuxilioBox] = useState(false);
-  const [visitasBox, setVisitasBox] = useState(false);
-  const [acompanhamentoBox, setAcompanhamentoBox] = useState(false);
+  const [termoBox, setTermoBox] = useState(pet.exigencias.termo_apadrinhamento);
+  const [auxilioBox, setAuxilioBox] = useState(
+    pet.exigencias.auxilio_financeiro.alimentacao ||
+      pet.exigencias.auxilio_financeiro.objetos ||
+      pet.exigencias.auxilio_financeiro.saude
+  );
+  const [visitasBox, setVisitasBox] = useState(pet.exigencias.visitas);
+  const [acompanhamentoBox, setAcompanhamentoBox] = useState(
+    pet.exigencias.acompanhamento_pos
+  );
 
-  const [alimentacaoBox, setAlimentacaoBox] = useState(false);
-  const [saudeBox, setSaudeBox] = useState(false);
-  const [objetosBox, setObjetosBox] = useState(false);
+  const [alimentacaoBox, setAlimentacaoBox] = useState(
+    pet.exigencias.auxilio_financeiro.alimentacao
+  );
+  const [saudeBox, setSaudeBox] = useState(
+    pet.exigencias.auxilio_financeiro.saude
+  );
+  const [objetosBox, setObjetosBox] = useState(
+    pet.exigencias.auxilio_financeiro.objetos
+  );
 
-  const [adocaoButton, setAdocaoButton] = useState(null);
+  const [adocaoButton, setAdocaoButton] = useState(
+    pet.adocao ? "adocao" : "nao_adocao"
+  );
 
-  const [acompanhamentoButton, setAcompanhamentoButton] = useState(null);
+  const [acompanhamentoButton, setAcompanhamentoButton] = useState(
+    pet.exigencias.acompanhamento_pos
+  );
 
-  const [nomeText, setNomeText] = useState("");
-  const [doencasText, setDoencasText] = useState("");
-  const [sobreText, setSobreText] = useState("");
-  const [enderecoText, setEnderecoText] = useState("");
+  const [nomeText, setNomeText] = useState(pet.nome);
+  const [doencasText, setDoencasText] = useState(pet.doencas);
+  const [sobreText, setSobreText] = useState(pet.sobre);
+  const [enderecoText, setEnderecoText] = useState(pet.endereco);
 
   const [imageBase64, setImageBase64] = useState("");
   const [image, setImage] = useState(null);
-
-  function validate(value) {
-    switch (value) {
-      case null:
-        return false;
-      case "":
-        return false;
-      default:
-        return true;
-    }
-  }
-
-  function validateAnimal(data) {
-    for (const key in data) {
-      if (!validate(data[key])) {
-        alert(`o campo ${key} é obrigatorio`);
-        return false;
-      }
-    }
-    return true;
-  }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -108,8 +108,6 @@ const AnimalRegistration = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       //setImage(result.assets[0].uri);
 
@@ -119,17 +117,19 @@ const AnimalRegistration = ({ navigation }) => {
       });
 
       const base64Img = `data:img/png;base64,${fsRead}`;
-      //console.log(base64Img);
       setImage(base64Img);
       setImageBase64(base64Img);
-      //console.log("deu bao");
     }
   };
 
-  const handleAddAnimal = () => {
+  const handleUpdateAnimal = () => {
+    if (originalImage === imageBase64) {
+      setImageBase64(false);
+    }
+
     form_animal = {
+      id: pet.id,
       nome: nomeText,
-      userId: stateUser.data.uid,
       especie: especieButton,
       sexo: sexoButton,
       porte: porteButton,
@@ -157,12 +157,9 @@ const AnimalRegistration = ({ navigation }) => {
       imageBase64: imageBase64,
     };
 
-    console.log(AddAnimal);
-    if (validateAnimal(form_animal)) {
-      return AddAnimal(form_animal)
-        .then(() => navigation.navigate("AnimalRegistrationSuccess"))
-        .catch((error) => alert(error.message));
-    }
+    return UpdateAnimal(form_animal)
+      .then(() => navigation.navigate("AnimalUpdateSuccess"))
+      .catch((error) => alert(error.message));
   };
 
   return (
@@ -192,7 +189,7 @@ const AnimalRegistration = ({ navigation }) => {
             </View>
             <TouchableOpacity style={ImageUploadBox} onPress={pickImage}>
               <View style={styles.ImageUploadView}>
-                <Icon name='plus-circle' style={ImageUploadIcon} />
+                <Icon name="plus-circle" style={ImageUploadIcon} />
                 <Text style={ImageUploadText}>adicionar foto</Text>
               </View>
             </TouchableOpacity>
@@ -219,7 +216,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='cachorro'
+                  value="cachorro"
                   status={
                     especieButton === "cachorro" ? "checked" : "unchecked"
                   }
@@ -230,7 +227,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='gato'
+                  value="gato"
                   status={especieButton === "gato" ? "checked" : "unchecked"}
                   onPress={() => setEspecieButton("gato")}
                 />
@@ -246,7 +243,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='macho'
+                  value="macho"
                   status={sexoButton === "macho" ? "checked" : "unchecked"}
                   onPress={() => setSexoButton("macho")}
                 />
@@ -255,7 +252,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='femea'
+                  value="femea"
                   status={sexoButton === "femea" ? "checked" : "unchecked"}
                   onPress={() => setSexoButton("femea")}
                 />
@@ -271,7 +268,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='pequeno'
+                  value="pequeno"
                   status={porteButton === "pequeno" ? "checked" : "unchecked"}
                   onPress={() => setPorteButton("pequeno")}
                 />
@@ -280,7 +277,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='medio'
+                  value="medio"
                   status={porteButton === "medio" ? "checked" : "unchecked"}
                   onPress={() => setPorteButton("medio")}
                 />
@@ -289,7 +286,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='grande'
+                  value="grande"
                   status={porteButton === "grande" ? "checked" : "unchecked"}
                   onPress={() => setPorteButton("grande")}
                 />
@@ -305,7 +302,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='filhote'
+                  value="filhote"
                   status={idadeButton === "filhote" ? "checked" : "unchecked"}
                   onPress={() => setIdadeButton("filhote")}
                 />
@@ -314,7 +311,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='adulto'
+                  value="adulto"
                   status={idadeButton === "adulto" ? "checked" : "unchecked"}
                   onPress={() => setIdadeButton("adulto")}
                 />
@@ -323,7 +320,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='idoso'
+                  value="idoso"
                   status={idadeButton === "idoso" ? "checked" : "unchecked"}
                   onPress={() => setIdadeButton("idoso")}
                 />
@@ -557,7 +554,7 @@ const AnimalRegistration = ({ navigation }) => {
                 <View style={styles.LargeCheckboxContainer}>
                   <RadioButton.Android
                     style={styles.checkbox}
-                    value='1mes'
+                    value="1mes"
                     status={
                       acompanhamentoButton === "1mes" ? "checked" : "unchecked"
                     }
@@ -572,7 +569,7 @@ const AnimalRegistration = ({ navigation }) => {
                 <View style={styles.LargeCheckboxContainer}>
                   <RadioButton.Android
                     style={styles.checkbox}
-                    value='3meses'
+                    value="3meses"
                     status={
                       acompanhamentoButton === "3meses"
                         ? "checked"
@@ -589,7 +586,7 @@ const AnimalRegistration = ({ navigation }) => {
                 <View style={styles.LargeCheckboxContainer}>
                   <RadioButton.Android
                     style={styles.checkbox}
-                    value='6meses'
+                    value="6meses"
                     status={
                       acompanhamentoButton === "6meses"
                         ? "checked"
@@ -610,7 +607,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='adocao'
+                  value="adocao"
                   status={adocaoButton === "adocao" ? "checked" : "unchecked"}
                   onPress={() => setAdocaoButton("adocao")}
                 />
@@ -619,7 +616,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value='nao_adocao'
+                  value="nao_adocao"
                   status={
                     adocaoButton === "nao_adocao" ? "checked" : "unchecked"
                   }
@@ -656,10 +653,10 @@ const AnimalRegistration = ({ navigation }) => {
             </View>
             <View style={styles.AdotarButtonView}>
               <TouchableOpacity
-                onPress={handleAddAnimal}
+                onPress={handleUpdateAnimal}
                 style={styles.StandardButton}
               >
-                <Text style={styles.AdotarButtonText}>COLOCAR PARA ADOÇÃO</Text>
+                <Text style={styles.AdotarButtonText}>ATUALIZAR ANIMAL</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -825,4 +822,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AnimalRegistration;
+export default EditPet;

@@ -5,6 +5,8 @@ import "firebase/compat/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+import { doc, updateDoc } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyD2-7f6TwxN44Es6xeU3H_5FKtGHFCcEvg",
   authDomain: "meow-auth-c73ed.firebaseapp.com",
@@ -179,4 +181,91 @@ const getUserDocument = async (userId) => {
   return teste;
 };
 
-export { auth, firestore, firebase, createUserDocument, AddAnimal, GetAnimals, updateUserNotificationToken, getUserDocument };
+const UpdateAnimal = async (form_animal) => {
+  try {
+    const {
+      id,
+      nome,
+      especie,
+      sexo,
+      porte,
+      idade,
+      brincalhao,
+      timido,
+      calmo,
+      guarda,
+      amoroso,
+      preguicoso,
+      vacinado,
+      vermifugado,
+      castrado,
+      doente,
+      doencas,
+      termo_apadrinhamento,
+      alimentacao,
+      saude,
+      objetos,
+      visitas,
+      acompanhamento_pos,
+      sobre,
+      adocao,
+      endereco,
+      imageBase64,
+    } = form_animal;
+
+    let updatedAnimal = {
+      nome: nome,
+      especie: especie,
+      sexo: sexo,
+      porte: porte,
+      idade: idade,
+      brincalhao: brincalhao,
+      timido: timido,
+      calmo: calmo,
+      guarda: guarda,
+      amoroso: amoroso,
+      preguicoso: preguicoso,
+      vacinado: vacinado,
+      vermifugado: vermifugado,
+      castrado: castrado,
+      doente: doente,
+      doencas: doencas,
+      termo_apadrinhamento: termo_apadrinhamento,
+      alimentacao: alimentacao,
+      saude: saude,
+      objetos: objetos,
+      visitas: visitas,
+      acompanhamento_pos: acompanhamento_pos,
+      sobre: sobre,
+      adocao: adocao,
+      endereco: endereco,
+    };
+
+    if (imageBase64) {
+      updatedAnimal.imageBase64 = imageBase64;
+    }
+
+    if (!adocao) {
+      updatedAnimal.interests = [];
+    }
+
+    await updateDoc(doc(firestore, "animals", id), updatedAnimal);
+
+    console.log("Animal alterado.");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  auth,
+  firestore,
+  firebase,
+  createUserDocument,
+  AddAnimal,
+  GetAnimals,
+  UpdateAnimal,
+  updateUserNotificationToken,
+  getUserDocument
+};
+

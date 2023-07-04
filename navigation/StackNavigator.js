@@ -21,6 +21,10 @@ import InterestsOnPet from "../src/screens/InterestsOnPet";
 import Chat from "../src/screens/Chat";
 import FinalizarAdocao from "../src/screens/FinalizarAdocao";
 import ProcessoFinalizado from "../src/screens/ProcessoFinalizado";
+import EditPet from "../src/screens/EditPet";
+import AnimalUpdateSuccess from "../src/screens/AnimalUpdateSuccess";
+import Favorites from "../src/screens/Favorites";
+import Pet from "../src/screens/Pet";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -72,7 +76,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='MyPets'
+            name="MyPets"
             component={MyPets}
             options={{
               title: "Meus Pets",
@@ -88,15 +92,15 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name='search1'
+                  name="search1"
                   size={24}
-                  color='black'
+                  color="black"
                 />
               ),
             }}
           />
           <Drawer.Screen
-            name='AdoptPet'
+            name="AdoptPet"
             component={AdoptPet}
             options={{
               title: "Adotar",
@@ -112,9 +116,33 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name='search1'
+                  name="search1"
                   size={24}
-                  color='black'
+                  color="black"
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name="Favorites"
+            component={Favorites}
+            options={{
+              title: "Favoritos",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#88c9bf",
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+              headerRight: () => (
+                <AntDesign
+                  style={{ marginRight: 15 }}
+                  name="search1"
+                  size={24}
+                  color="black"
                 />
               ),
             }}
@@ -147,7 +175,7 @@ const DrawerNavigator = () => {
       ) : (
         <>
           <Drawer.Screen
-            name='LoadingPage'
+            name="LoadingPage"
             component={LoadingPage}
             options={{
               title: "Loading",
@@ -165,7 +193,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='FrontPage'
+            name="FrontPage"
             component={FrontPage}
             options={{
               title: "Início",
@@ -182,7 +210,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name='Login'
+            name="Login"
             component={Login}
             options={{
               title: "Login",
@@ -227,15 +255,15 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name='DrawerNavigator'
+        name="DrawerNavigator"
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name='AnimalRegistrationSuccess'
+        name="AnimalRegistrationSuccess"
         component={AnimalRegistrationSuccess}
         options={{
-          title: "Cadastro do Animal",
+          title: "Cadastro do animal",
           headerStyle: {
             backgroundColor: "#ffd358",
           },
@@ -246,7 +274,21 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='OpsCadastro'
+        name="AnimalUpdateSuccess"
+        component={AnimalUpdateSuccess}
+        options={{
+          title: "Atualização do animal",
+          headerStyle: {
+            backgroundColor: "#ffd358",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="OpsCadastro"
         component={OpsCadastro}
         options={{
           title: "Cadastro",
@@ -260,7 +302,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name='MyPet'
+        name="MyPet"
         component={MyPet}
         options={({ route }) => ({
           title: route.params.pet.nome,
@@ -274,9 +316,31 @@ const StackNavigator = () => {
           headerRight: () => (
             <Ionicons
               style={{ marginRight: 15, color: "#434343" }}
-              name='share-social'
+              name="share-social"
               size={24}
-              color='black'
+              color="black"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="Pet"
+        component={Pet}
+        options={({ route }) => ({
+          title: route.params.pet.nome,
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <Ionicons
+              style={{ marginRight: 15, color: "#434343" }}
+              name="share-social"
+              size={24}
+              color="black"
             />
           ),
         })}
@@ -324,6 +388,22 @@ const StackNavigator = () => {
           title: "Finalizar processo",
           headerStyle: {
             backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="EditPet"
+        component={EditPet}
+        options={{
+          title: "Editar animal",
+          headerShadowVisible: true,
+          headerTitleAlign: "left",
+          headerStyle: {
+            backgroundColor: "#ffd358",
           },
           headerTintColor: "#434343",
           headerTitleStyle: {
