@@ -19,9 +19,9 @@ export function Logout(props, navigation) {
         <DrawerItemList {...props} />
         <DrawerItem
           icon={({ color, size }) => (
-            <Icon name='exit-to-app' color={color} size={size} />
+            <Icon name="exit-to-app" color={color} size={size} />
           )}
-          label='Sign Out'
+          label="Sign Out"
           onPress={() => {
             dispatch(logout({}));
           }}
