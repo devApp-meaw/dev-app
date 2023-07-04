@@ -20,6 +20,7 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import MeauNotifications from "../notifications/MeauNotifications";
 
 const AdoptPet = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
@@ -51,12 +52,23 @@ const AdoptPet = ({ navigation }) => {
     getPost();
   }, [isFocused]);
 
-  const handleInterestPet = async (animalId) => {
+  const handleInterestPet = async (animal) => {
+    console.log("Interessou, ne?");
+
+    animalId = animal.id;
+    animalOwner = animal.userId;
+
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayUnion(uid),
     });
 
     console.log("Interesse adicionado");
+
+    MeauNotifications.sendPushNotificationToUser(
+      animalOwner, data={
+        title:"Novo interesse em " + animal.nome, 
+        body:"Usuario <TODO> esta interessado no seu pet!",
+      });
   };
 
   return (
@@ -64,6 +76,7 @@ const AdoptPet = ({ navigation }) => {
       <FlatList
         data={animals}
         renderItem={({ item }) => {
+          const animal   = item;
           const animalId = item.id;
           const petImage =
             item.especie == "cachorro"
@@ -76,7 +89,7 @@ const AdoptPet = ({ navigation }) => {
                 <Text style={styles.NameText}> {item.nome} </Text>
                 <TouchableOpacity
                   style={styles.HeartIcon}
-                  onPress={() => handleInterestPet(animalId)}
+                  onPress={() => handleInterestPet(animal)}
                 >
                   <AntDesign name="hearto" size={24} color="black" />
                 </TouchableOpacity>

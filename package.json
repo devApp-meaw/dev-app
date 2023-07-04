@@ -41,7 +41,8 @@
     "redux": "^4.2.1",
     "styled-components": "^5.3.9",
     "expo-notifications": "~0.18.1",
-    "expo-device": "~5.2.1"
+    "expo-device": "~5.2.1",
+    "expo-dev-client": "~2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
