@@ -21,6 +21,7 @@ import * as FileSystem from "expo-file-system";
 
 const AnimalRegistration = ({ navigation }) => {
   const stateUser = useSelector((state) => state.user);
+  console.log(stateUser.isLogged);
 
   const {
     Row,
@@ -77,6 +78,27 @@ const AnimalRegistration = ({ navigation }) => {
   const [imageBase64, setImageBase64] = useState("");
   const [image, setImage] = useState(null);
 
+  function validate(value) {
+    switch (value) {
+      case null:
+        return false;
+      case "":
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  function validateAnimal(data) {
+    for (const key in data) {
+      if (!validate(data[key])) {
+        alert(`o campo ${key} é obrigatorio`);
+        return false;
+      }
+    }
+    return true;
+  }
+
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -85,6 +107,8 @@ const AnimalRegistration = ({ navigation }) => {
       aspect: [3, 3],
       quality: 1,
     });
+
+    console.log(result);
 
     if (!result.canceled) {
       //setImage(result.assets[0].uri);
@@ -95,8 +119,10 @@ const AnimalRegistration = ({ navigation }) => {
       });
 
       const base64Img = `data:img/png;base64,${fsRead}`;
+      //console.log(base64Img);
       setImage(base64Img);
       setImageBase64(base64Img);
+      //console.log("deu bao");
     }
   };
 
@@ -131,9 +157,12 @@ const AnimalRegistration = ({ navigation }) => {
       imageBase64: imageBase64,
     };
 
-    return AddAnimal(form_animal)
-      .then(() => navigation.navigate("AnimalRegistrationSuccess"))
-      .catch((error) => alert(error.message));
+    console.log(AddAnimal);
+    if (validateAnimal(form_animal)) {
+      return AddAnimal(form_animal)
+        .then(() => navigation.navigate("AnimalRegistrationSuccess"))
+        .catch((error) => alert(error.message));
+    }
   };
 
   return (
@@ -163,7 +192,7 @@ const AnimalRegistration = ({ navigation }) => {
             </View>
             <TouchableOpacity style={ImageUploadBox} onPress={pickImage}>
               <View style={styles.ImageUploadView}>
-                <Icon name="plus-circle" style={ImageUploadIcon} />
+                <Icon name='plus-circle' style={ImageUploadIcon} />
                 <Text style={ImageUploadText}>adicionar foto</Text>
               </View>
             </TouchableOpacity>
@@ -190,7 +219,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="cachorro"
+                  value='cachorro'
                   status={
                     especieButton === "cachorro" ? "checked" : "unchecked"
                   }
@@ -201,7 +230,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="gato"
+                  value='gato'
                   status={especieButton === "gato" ? "checked" : "unchecked"}
                   onPress={() => setEspecieButton("gato")}
                 />
@@ -217,7 +246,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="macho"
+                  value='macho'
                   status={sexoButton === "macho" ? "checked" : "unchecked"}
                   onPress={() => setSexoButton("macho")}
                 />
@@ -226,7 +255,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="femea"
+                  value='femea'
                   status={sexoButton === "femea" ? "checked" : "unchecked"}
                   onPress={() => setSexoButton("femea")}
                 />
@@ -242,7 +271,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="pequeno"
+                  value='pequeno'
                   status={porteButton === "pequeno" ? "checked" : "unchecked"}
                   onPress={() => setPorteButton("pequeno")}
                 />
@@ -251,7 +280,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="medio"
+                  value='medio'
                   status={porteButton === "medio" ? "checked" : "unchecked"}
                   onPress={() => setPorteButton("medio")}
                 />
@@ -260,7 +289,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="grande"
+                  value='grande'
                   status={porteButton === "grande" ? "checked" : "unchecked"}
                   onPress={() => setPorteButton("grande")}
                 />
@@ -276,7 +305,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="filhote"
+                  value='filhote'
                   status={idadeButton === "filhote" ? "checked" : "unchecked"}
                   onPress={() => setIdadeButton("filhote")}
                 />
@@ -285,7 +314,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="adulto"
+                  value='adulto'
                   status={idadeButton === "adulto" ? "checked" : "unchecked"}
                   onPress={() => setIdadeButton("adulto")}
                 />
@@ -294,7 +323,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="idoso"
+                  value='idoso'
                   status={idadeButton === "idoso" ? "checked" : "unchecked"}
                   onPress={() => setIdadeButton("idoso")}
                 />
@@ -528,7 +557,7 @@ const AnimalRegistration = ({ navigation }) => {
                 <View style={styles.LargeCheckboxContainer}>
                   <RadioButton.Android
                     style={styles.checkbox}
-                    value="1mes"
+                    value='1mes'
                     status={
                       acompanhamentoButton === "1mes" ? "checked" : "unchecked"
                     }
@@ -543,7 +572,7 @@ const AnimalRegistration = ({ navigation }) => {
                 <View style={styles.LargeCheckboxContainer}>
                   <RadioButton.Android
                     style={styles.checkbox}
-                    value="3meses"
+                    value='3meses'
                     status={
                       acompanhamentoButton === "3meses"
                         ? "checked"
@@ -560,7 +589,7 @@ const AnimalRegistration = ({ navigation }) => {
                 <View style={styles.LargeCheckboxContainer}>
                   <RadioButton.Android
                     style={styles.checkbox}
-                    value="6meses"
+                    value='6meses'
                     status={
                       acompanhamentoButton === "6meses"
                         ? "checked"
@@ -581,7 +610,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="adocao"
+                  value='adocao'
                   status={adocaoButton === "adocao" ? "checked" : "unchecked"}
                   onPress={() => setAdocaoButton("adocao")}
                 />
@@ -590,7 +619,7 @@ const AnimalRegistration = ({ navigation }) => {
               <View style={CheckboxContainer}>
                 <RadioButton.Android
                   style={styles.checkbox}
-                  value="nao_adocao"
+                  value='nao_adocao'
                   status={
                     adocaoButton === "nao_adocao" ? "checked" : "unchecked"
                   }
