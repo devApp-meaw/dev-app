@@ -20,8 +20,77 @@ import { AntDesign } from "@expo/vector-icons";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 const Chat = ({ navigation }) => {
+  const { uid } = useSelector((state) => state.user.data);
+
+  const [chatTabs, setChatTabs] = useState([]);
+
+  const collectIdsAndDocs = (doc) => {
+    return { id: doc.id, ...doc.data() };
+  };
+
+  const isFocused = useIsFocused();
+
+  const getChatTabs = async () => {
+    const queryInterestedChatTabs = query(
+      collection(firestore, "chat"),
+      where("interested", "==", uid)
+    );
+
+    queryInterestedChatTabsSnapshot = await getDocs(queryInterestedChatTabs);
+
+    const interestedChatTabs =
+      queryInterestedChatTabsSnapshot.docs.map(collectIdsAndDocs);
+
+    const queryOwnerChatTabs = query(
+      collection(firestore, "chat"),
+      where("owner", "==", uid)
+    );
+
+    queryOwnerChatTabsSnapshot = await getDocs(queryOwnerChatTabs);
+
+    const ownerChatTabs =
+      queryOwnerChatTabsSnapshot.docs.map(collectIdsAndDocs);
+
+    const allChatTabs = interestedChatTabs.concat(ownerChatTabs);
+
+    let user;
+    let pet;
+
+    for (let chatTab of allChatTabs) {
+      user = await firestore.collection("users").doc(chatTab["owner"]).get();
+      pet = await firestore.collection("animals").doc(chatTab["pet"]).get();
+      chatTab["userName"] = user.data()["fullName"];
+      chatTab["petName"] = pet.data()["nome"];
+    }
+
+    console.log(allChatTabs);
+
+    setChatTabs(allChatTabs);
+  };
+
+  useEffect(() => {
+    getChatTabs();
+  }, [isFocused]);
+
   return (
     <View style={styles.mainContainerStyle}>
+      <FlatList
+        data={chatTabs}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ChatTab", { chatTab: item })}
+              style={styles.ChatTabView}
+            >
+              <Text style={styles.ChatTabText}>
+                {item.userName} | {item.petName}
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
+        keyExtractor={(item) => item.id}
+        extraData={chatTabs}
+      />
       <View style={[styles.ButtonRow, styles.floatingMenuButtonStyle]}>
         <TouchableOpacity
           onPress={() => navigation.navigate("FinalizarAdocao")}
@@ -64,6 +133,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     position: "absolute",
     bottom: 35,
+  },
+  ChatTabView: {
+    alignSelf: "center",
+    marginVertical: 5,
+  },
+  ChatTabText: {
+    color: "#589b9b",
+    fontSize: 30,
   },
 });
 

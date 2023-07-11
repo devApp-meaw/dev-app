@@ -19,6 +19,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
 
 const AdoptPet = ({ navigation }) => {
@@ -70,9 +71,18 @@ const AdoptPet = ({ navigation }) => {
     getPost();
   }, [isFocused]);
 
-  const handleInterestPet = async (animalId) => {
+  const handleInterestPet = async (animalId, ownerId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayUnion(uid),
+    });
+
+    uid, ownerId;
+
+    await firestore.collection("chat").add({
+      owner: ownerId,
+      interested: uid,
+      pet: animalId,
+      messages: [],
     });
 
     console.log("Interesse adicionado");
@@ -81,6 +91,16 @@ const AdoptPet = ({ navigation }) => {
   const handleUninterestPet = async (animalId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayRemove(uid),
+    });
+
+    const queryChatTabs = query(
+      collection(firestore, "chat"),
+      where("interested", "==", uid),
+      where("pet", "==", animalId)
+    );
+    const docSnap = await getDocs(queryChatTabs);
+    docSnap.forEach((doc) => {
+      deleteDoc(doc.ref);
     });
 
     console.log("Interesse removido");
@@ -92,6 +112,7 @@ const AdoptPet = ({ navigation }) => {
         data={animals}
         renderItem={({ item }) => {
           const animalId = item.id;
+          const ownerId = item.userId;
           const petImage =
             item.especie == "cachorro"
               ? require("../../assets/default_dog.jpg")
@@ -122,7 +143,7 @@ const AdoptPet = ({ navigation }) => {
                       <TouchableOpacity
                         style={styles.HeartIcon}
                         onPress={() => {
-                          handleInterestPet(animalId);
+                          handleInterestPet(animalId, ownerId);
                         }}
                       >
                         <AntDesign name="hearto" size={24} color="black" />
