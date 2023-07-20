@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 import { AddAnimal } from "../../firebase";
+import { firestore } from "../../firebase";
 
 import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
@@ -127,33 +128,37 @@ const AnimalRegistration = ({ navigation }) => {
     }
   };
 
+
   // Lugar onde o UseEffect habilita interagir com notificaoes
   useEffect(() => {
-    const notificationInteractionSubscription = Notifications.addNotificationReceivedListener(
-      response => {
-        try {
-          notificationData = response.notification.request.trigger.remoteMessage.data;
-          dataBody = notificationData.body;
-          console.log(dataBody);
-        } catch (except) {
-          console.log("ERRO: nao foi possivel processar notificacao.");
-        }
-
-        navigation.navigate("MyPets")
-      }
-    )
 
     const notification2 = Notifications.addNotificationResponseReceivedListener(
       response => {
-        try {
-          notificationData = response.notification.request.trigger.remoteMessage.data;
-          dataBody = notificationData.body;
-          console.log(dataBody);
-        } catch (except) {
-          console.log("ERRO: nao foi possivel processar notificacao.");
-        }
+        (async () => {
+          try {
+            notificationData = response.notification.request.trigger.remoteMessage.data;
+            dataBody = notificationData.body;
+  
+            var animalId = JSON.parse(dataBody).animal;
+  
+            currentPetDb = await firestore.collection("animals").doc(animalId).get();
 
-        navigation.navigate("MyPets")
+            console.log(currentPetDb.data())
+
+            let pet = {id: animalId, interests: currentPetDb.data()["interests"]};
+    
+            console.log(pet);
+
+            navigation.navigate("InterestsOnPet", {
+              interests: pet.interests,
+              pet: pet
+            })
+  
+          } catch (except) {
+            console.log("ERRO: nao foi possivel processar notificacao.");
+            console.log(except);
+          }
+        })();
       }
     )
 
@@ -161,7 +166,6 @@ const AnimalRegistration = ({ navigation }) => {
 
     return () => {
     console.log("TELA MORTA");
-      notificationInteractionSubscription.remove()
       notification2.remove()
     }
   });

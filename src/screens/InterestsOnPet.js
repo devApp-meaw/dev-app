@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+
 import { firestore } from "../../firebase";
 
 import { StyleSheet, SafeAreaView } from "react-native";
@@ -17,12 +18,13 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { AntDesign } from "@expo/vector-icons";
 
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, updateDoc, doc, arrayRemove, deleteDoc} from "firebase/firestore";
 
 const _widthImage = Dimensions.get("screen").width * 0.35;
 
 const InterestsOnPet = ({ route, navigation }) => {
-  const { interests } = route.params;
+  var { interests, pet } = route.params;
+  const { uid } = useSelector((state) => state.user.data);
   const collectIdsAndDocs = (doc) => {
     return { id: doc.id, ...doc.data() };
   };
@@ -30,6 +32,57 @@ const InterestsOnPet = ({ route, navigation }) => {
   const [users, setUsers] = useState(null);
 
   const isFocused = useIsFocused();
+
+  const openChat = async (animalId, interestedUser) => {
+    const queryChats = query(
+      collection(firestore, "chat"),
+      where("interested", "==", interestedUser),
+      where("pet", "==", animalId),
+      where("owner", "==", uid)
+    );
+    
+    chatsSnapchots = await getDocs(queryChats);
+
+    var count = 0;
+    chatsSnapchots.forEach((doc) => {
+      count+=1;
+    });
+    console.log(count);
+
+    if (count == 0) {
+      await firestore.collection("chat").add({
+        owner: uid,
+        interested: interestedUser,
+        pet: animalId,
+        createdAt: new Date(),
+        messages: [],
+      });
+    }
+
+    navigation.navigate("Chat");
+  };
+
+  const ignoreInterest = async (intereseted, animalId) => {
+    await updateDoc(doc(firestore, "animals", animalId), {
+      interests: arrayRemove(intereseted),
+    });
+
+    const queryInterests = query(
+      collection(firestore, "chat"),
+      where("interested", "==", intereseted),
+      where("pet", "==", animalId)
+    );
+
+    interestsSnapshot = await getDocs(queryInterests);
+
+    interestsSnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+
+    console.log("Interesse removido");
+
+    navigation.navigate("MyPets");
+  };
 
   const getUser = async (id) => {
     const UserSnapshot = await firestore
@@ -73,6 +126,23 @@ const InterestsOnPet = ({ route, navigation }) => {
               <Image style={styles.userImageStyle} source={userImage}></Image>
               <Text>{item.fullName}</Text>
               <Text>{item.age} anos</Text>
+              
+              <View style={styles.SmallButtonRow}>
+                  <TouchableOpacity
+                    onPress={() => openChat(pet.id, item.id)}
+                    style={styles.StandardButton}
+                  >
+                  <Text style={styles.ButtonText}>ABRIR CHAT</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.SmallButtonRow}>
+                <TouchableOpacity
+                  onPress={() => ignoreInterest(item.id, pet.id)}
+                  style={styles.StandardButton}
+                >
+                  <Text style={styles.ButtonText}>IGNORAR</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           );
         }}
@@ -117,6 +187,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
   },
+  SmallButtonRow: {
+    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
   StandardButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -131,7 +206,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#88c9bf",
   },
   ButtonText: {
-    color: "#757575",
+    color: "#505050",
   },
 });
 

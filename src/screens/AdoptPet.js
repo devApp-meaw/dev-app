@@ -73,13 +73,10 @@ const AdoptPet = ({ navigation }) => {
   }, [isFocused]);
 
   const handleInterestPet = async (animal) => {
-
     animalId = animal.id;
     ownerId = animal.userId;
-    
     currentUser = await firestore.collection("users").doc(uid).get();
-
-    console.log(currentUser);
+    console.log(currentUser.data()["fullName"]);
 
     try {
       await updateDoc(doc(firestore, "animals", animalId), {
@@ -90,21 +87,21 @@ const AdoptPet = ({ navigation }) => {
       return;
     }
 
-    await firestore.collection("chat").add({
+    /*await firestore.collection("chat").add({
       owner: ownerId,
       interested: uid,
       pet: animalId,
       createdAt: new Date(),
       messages: [],
-    });
+    });*/
 
     console.log("Interesse adicionado");
 
     MeauNotifications.sendPushNotificationToUser(
       ownerId, data={
         title: "Novo interesse em " + animal.nome, 
-        body: "Usuario " + currentUser.nome + " esta interessado no seu pet!",
-        data: { animal: animal.id }
+        body: "Atencao! " + currentUser.data()["fullName"] + " esta interessado(a) no seu pet!",
+        data: { animal: animal.id, interested: uid }
       });
   };
 
