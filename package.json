@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "set \"GENERATE_SOURCEMAP=false\" && expo start",
+    "start": "GENERATE_SOURCEMAP=false expo start",
     "android": "GENERATE_SOURCEMAP=false expo start --android",
     "ios": "GENERATE_SOURCEMAP=false expo start --ios",
-    "web": "set \"GENERATE_SOURCEMAP=false\" && expo start --web"
+    "web": "GENERATE_SOURCEMAP=false expo start --web"
   },
   "dependencies": {
     "@expo-google-fonts/courgette": "^0.2.3",
