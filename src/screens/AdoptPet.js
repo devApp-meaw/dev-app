@@ -22,6 +22,7 @@ import {
   onSnapshot,
   deleteDoc,
 } from "firebase/firestore";
+import MeauNotifications from "../notifications/MeauNotifications";
 
 const AdoptPet = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
@@ -71,10 +72,23 @@ const AdoptPet = ({ navigation }) => {
     getPost();
   }, [isFocused]);
 
-  const handleInterestPet = async (animalId, ownerId) => {
-    await updateDoc(doc(firestore, "animals", animalId), {
-      interests: arrayUnion(uid),
-    });
+  const handleInterestPet = async (animal) => {
+
+    animalId = animal.id;
+    ownerId = animal.userId;
+    
+    currentUser = await firestore.collection("users").doc(uid).get();
+
+    console.log(currentUser);
+
+    try {
+      await updateDoc(doc(firestore, "animals", animalId), {
+        interests: arrayUnion(uid),
+      });
+    } catch (ex) {
+      console.log("Erro ao adicionar interesse!");
+      return;
+    }
 
     await firestore.collection("chat").add({
       owner: ownerId,
@@ -85,6 +99,13 @@ const AdoptPet = ({ navigation }) => {
     });
 
     console.log("Interesse adicionado");
+
+    MeauNotifications.sendPushNotificationToUser(
+      ownerId, data={
+        title: "Novo interesse em " + animal.nome, 
+        body: "Usuario " + currentUser.nome + " esta interessado no seu pet!",
+        data: { animal: animal.id }
+      });
   };
 
   const handleUninterestPet = async (animalId) => {
@@ -112,6 +133,7 @@ const AdoptPet = ({ navigation }) => {
       <FlatList
         data={animals}
         renderItem={({ item }) => {
+          const animal   = item;
           const animalId = item.id;
           const ownerId = item.userId;
           const petImage =
@@ -144,7 +166,7 @@ const AdoptPet = ({ navigation }) => {
                       <TouchableOpacity
                         style={styles.HeartIcon}
                         onPress={() => {
-                          handleInterestPet(animalId, ownerId);
+                          handleInterestPet(animal);
                         }}
                       >
                         <AntDesign name="hearto" size={24} color="black" />

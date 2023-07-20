@@ -6,8 +6,11 @@ import { Provider as PaperProvider } from "react-native-paper";
 import { Provider, useSelector } from "react-redux";
 import store from "./src/redux/store";
 import StackNavigator from "./navigation/StackNavigator.js";
+import MeauNotifications from "./src/notifications/MeauNotifications.js";
 
 import { useFonts, Courgette_400Regular } from "@expo-google-fonts/courgette";
+
+MeauNotifications.initNotifications();
 
 const App = () => {
   let [fontsLoaded] = useFonts({
