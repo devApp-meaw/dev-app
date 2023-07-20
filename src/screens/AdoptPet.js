@@ -72,21 +72,28 @@ const AdoptPet = ({ navigation }) => {
   }, [isFocused]);
 
   const handleInterestPet = async (animal) => {
-    console.log("Interessou, ne?");
 
     animalId = animal.id;
     animalOwner = animal.userId;
 
-    await updateDoc(doc(firestore, "animals", animalId), {
-      interests: arrayUnion(uid),
-    });
+    console.log("Interessou, ne? Animal: " + animalId);
+
+    try {
+      await updateDoc(doc(firestore, "animals", animalId), {
+        interests: arrayUnion(uid),
+      });
+    } catch (ex) {
+      console.log("Erro ao adicionar interesse!");
+      return;
+    }
 
     console.log("Interesse adicionado");
 
     MeauNotifications.sendPushNotificationToUser(
       animalOwner, data={
-        title:"Novo interesse em " + animal.nome, 
-        body:"Usuario <TODO> esta interessado no seu pet!",
+        title: "Novo interesse em " + animal.nome, 
+        body: "Usuario <TODO> esta interessado no seu pet!",
+        data: { animal: animal.id }
       });
   };
 
@@ -135,7 +142,7 @@ const AdoptPet = ({ navigation }) => {
                       <TouchableOpacity
                         style={styles.HeartIcon}
                         onPress={() => {
-                          handleInterestPet(animalId);
+                          handleInterestPet(animal);
                         }}
                       >
                         <AntDesign name="hearto" size={24} color="black" />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 import { AddAnimal } from "../../firebase";
 
@@ -18,6 +18,7 @@ import { Checkbox, RadioButton } from "react-native-paper";
 import { useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import * as Notifications from 'expo-notifications';
 
 const AnimalRegistration = ({ navigation }) => {
   const stateUser = useSelector((state) => state.user);
@@ -125,6 +126,30 @@ const AnimalRegistration = ({ navigation }) => {
       //console.log("deu bao");
     }
   };
+
+  // Lugar onde o UseEffect habilita interagir com notificaoes
+  useEffect(() => {
+    const notificationInteractionSubscription = Notifications.addNotificationResponseReceivedListener(
+      response => {
+        try {
+          notificationData = response.notification.request.trigger.remoteMessage.data;
+          dataBody = notificationData.body;
+          console.log(dataBody);
+        } catch (except) {
+          console.log("ERRO: nao foi possivel processar notificacao.");
+        }
+
+        navigation.navigate("MyPets")
+      }
+    )
+
+    console.log("TELA ABERTA");
+
+    return () => {
+    console.log("TELA MORTA");
+      notificationInteractionSubscription.remove()
+    }
+  });
 
   const handleAddAnimal = () => {
     form_animal = {

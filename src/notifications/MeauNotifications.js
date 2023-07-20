@@ -6,6 +6,8 @@ import * as Notifications from 'expo-notifications';
 import { updateUserNotificationToken, getUserDocument} from "../../firebase";
 
 var myNotificationToken;
+var isNotificationsInitialized = false;
+var myNavigation = false;
 
 async function sendPushNotificationToUser(userId, data) {
   console.log("Bora notificar o user " + userId);
@@ -25,7 +27,7 @@ async function sendPushNotification(expoPushToken, data) {
     sound: 'default',
     title: data.title,
     body: data.body,
-    data: { someData: 'goes here' },
+    data: data.data,
   };
 
   await fetch('https://exp.host/--/api/v2/push/send', {
@@ -76,7 +78,6 @@ async function updateCurrentUserTokenOnDatabase(user) {
 }
 
 const MeauNotifications = {
-
   // Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
   sendPushNotification: sendPushNotification,
   sendPushNotificationToUser: sendPushNotificationToUser,
@@ -84,6 +85,10 @@ const MeauNotifications = {
   updateCurrentUserTokenOnDatabase: updateCurrentUserTokenOnDatabase,
   getNotificationToken: function() { return myNotificationToken; },
   initNotifications: async function() {
+    if (isNotificationsInitialized) {
+      return;
+    }
+
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
@@ -91,10 +96,11 @@ const MeauNotifications = {
         shouldSetBadge: false,
       }),
     });
-    
+
     token = await registerForPushNotificationsAsync();
     console.log("Token registrado: " + token);
     myNotificationToken = token;
+    isNotificationsInitialized = 1;
     return token;
   }
 };
