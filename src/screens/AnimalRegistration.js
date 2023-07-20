@@ -129,7 +129,21 @@ const AnimalRegistration = ({ navigation }) => {
 
   // Lugar onde o UseEffect habilita interagir com notificaoes
   useEffect(() => {
-    const notificationInteractionSubscription = Notifications.addNotificationResponseReceivedListener(
+    const notificationInteractionSubscription = Notifications.addNotificationReceivedListener(
+      response => {
+        try {
+          notificationData = response.notification.request.trigger.remoteMessage.data;
+          dataBody = notificationData.body;
+          console.log(dataBody);
+        } catch (except) {
+          console.log("ERRO: nao foi possivel processar notificacao.");
+        }
+
+        navigation.navigate("MyPets")
+      }
+    )
+
+    const notification2 = Notifications.addNotificationResponseReceivedListener(
       response => {
         try {
           notificationData = response.notification.request.trigger.remoteMessage.data;
@@ -148,6 +162,7 @@ const AnimalRegistration = ({ navigation }) => {
     return () => {
     console.log("TELA MORTA");
       notificationInteractionSubscription.remove()
+      notification2.remove()
     }
   });
 
