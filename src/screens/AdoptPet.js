@@ -19,6 +19,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  onSnapshot,
   deleteDoc,
 } from "firebase/firestore";
 
@@ -45,11 +46,11 @@ const AdoptPet = ({ navigation }) => {
       collection(firestore, "animals"),
       where("interests", "array-contains", uid)
     );
-    queryInterestsSnapshot = await getDocs(queryInterests);
 
-    const interestsNow = queryInterestsSnapshot.docs.map(collectIds);
-
-    setInterests(interestsNow);
+    onSnapshot(queryInterests, (snapshot) => {
+      let interestsNow = snapshot.docs.map(collectIds);
+      setInterests(interestsNow);
+    });
   };
 
   const getPost = async () => {
@@ -60,11 +61,10 @@ const AdoptPet = ({ navigation }) => {
       where("userId", "!=", uid),
       where("adocao", "==", true)
     );
-    queryAnimalsSnapshot = await getDocs(queryAnimals);
-
-    const animals = queryAnimalsSnapshot.docs.map(collectIdsAndDocs);
-
-    setAnimals(animals);
+    onSnapshot(queryAnimals, (snapshot) => {
+      let animals = snapshot.docs.map(collectIdsAndDocs);
+      setAnimals(animals);
+    });
   };
 
   useEffect(() => {
@@ -76,12 +76,11 @@ const AdoptPet = ({ navigation }) => {
       interests: arrayUnion(uid),
     });
 
-    uid, ownerId;
-
     await firestore.collection("chat").add({
       owner: ownerId,
       interested: uid,
       pet: animalId,
+      createdAt: new Date(),
       messages: [],
     });
 
@@ -93,13 +92,15 @@ const AdoptPet = ({ navigation }) => {
       interests: arrayRemove(uid),
     });
 
-    const queryChatTabs = query(
+    const queryInterests = query(
       collection(firestore, "chat"),
       where("interested", "==", uid),
       where("pet", "==", animalId)
     );
-    const docSnap = await getDocs(queryChatTabs);
-    docSnap.forEach((doc) => {
+
+    interestsSnapshot = await getDocs(queryInterests);
+
+    interestsSnapshot.forEach((doc) => {
       deleteDoc(doc.ref);
     });
 

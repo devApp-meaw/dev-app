@@ -28,6 +28,7 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
 
 import { Checkbox, RadioButton } from "react-native-paper";
@@ -51,6 +52,18 @@ const FinalizarAdocao = ({ navigation }) => {
       userId: userId,
       adocao: false,
       interests: [],
+    });
+
+    const queryInterests = query(
+      collection(firestore, "chat"),
+      where("interested", "==", userId),
+      where("pet", "==", animalId)
+    );
+
+    interestsSnapshot = await getDocs(queryInterests);
+
+    interestsSnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
     });
 
     console.log("Animal adotado!");

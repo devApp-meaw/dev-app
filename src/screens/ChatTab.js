@@ -37,39 +37,25 @@ const ChatTab = ({ route, navigation }) => {
 
   const [messages, setMessages] = useState([]);
 
-  let chatId;
-
-  const collectIdsAndDocs = (doc) => {
-    return { id: doc.id, ...doc.data() };
-  };
-
-  const collectMessages = (doc) => {
-    let messages = doc.data()["messages"];
-    messages = messages.map((obj, i) => ({
-      ...obj,
-      createdAt: obj["createdAt"].toDate(),
-    }));
-    return { id: doc.id, messages: messages };
-  };
-
   const getMessages = async () => {
-    const chatTabData = await firestore
+    unsubscribe = firestore
       .collection("chat")
       .doc(chatTab.id)
-      .get();
+      .onSnapshot((doc) => {
+        let messagesNow = doc.data()["messages"];
+        messagesNow = messagesNow.map((obj, i) => ({
+          ...obj,
+          createdAt: obj["createdAt"].toDate(),
+        }));
+        messagesNow.sort((a, b) => b.createdAt - a.createdAt);
 
-    let messagesNow = chatTabData.data()["messages"];
-    messagesNow = messagesNow.map((obj, i) => ({
-      ...obj,
-      createdAt: obj["createdAt"].toDate(),
-    }));
-    messagesNow.sort((a, b) => b.createdAt - a.createdAt);
-
-    setMessages(messagesNow);
+        setMessages(messagesNow);
+      });
   };
 
   useEffect(() => {
     getMessages();
+    return unsubscribe;
   }, []);
 
   const onSend = useCallback((messages = []) => {

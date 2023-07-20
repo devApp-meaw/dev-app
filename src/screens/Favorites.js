@@ -19,6 +19,8 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 
 const Favorites = ({ navigation }) => {
@@ -39,11 +41,11 @@ const Favorites = ({ navigation }) => {
       collection(firestore, "animals"),
       where("interests", "array-contains", uid)
     );
-    queryAnimalsSnapshot = await getDocs(queryAnimals);
 
-    const animals = queryAnimalsSnapshot.docs.map(collectIdsAndDocs);
-
-    setAnimals(animals);
+    onSnapshot(queryAnimals, (snapshot) => {
+      let animals = snapshot.docs.map(collectIdsAndDocs);
+      setAnimals(animals);
+    });
   };
 
   useEffect(() => {
@@ -53,6 +55,18 @@ const Favorites = ({ navigation }) => {
   const handleUninterestPet = async (animalId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayRemove(uid),
+    });
+
+    const queryInterests = query(
+      collection(firestore, "chat"),
+      where("interested", "==", uid),
+      where("pet", "==", animalId)
+    );
+
+    interestsSnapshot = await getDocs(queryInterests);
+
+    interestsSnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
     });
 
     console.log("Interesse removido");

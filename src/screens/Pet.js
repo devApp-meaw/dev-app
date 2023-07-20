@@ -5,7 +5,17 @@ import { firestore } from "../../firebase";
 
 import { StyleSheet, SafeAreaView, ScrollView } from "react-native";
 
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  deleteDoc,
+  query,
+  where,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 
 import { useSelector } from "react-redux";
 
@@ -15,9 +25,17 @@ const Pet = ({ route, navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
   const { pet } = route.params;
 
-  const handleInterestPet = async (animalId) => {
+  const handleInterestPet = async (animalId, ownerId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayUnion(uid),
+    });
+
+    await firestore.collection("chat").add({
+      owner: ownerId,
+      interested: uid,
+      pet: animalId,
+      createdAt: new Date(),
+      messages: [],
     });
 
     console.log("Interesse adicionado");
@@ -26,6 +44,18 @@ const Pet = ({ route, navigation }) => {
   const handleUninterestPet = async (animalId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayRemove(uid),
+    });
+
+    const queryInterests = query(
+      collection(firestore, "chat"),
+      where("interested", "==", uid),
+      where("pet", "==", animalId)
+    );
+
+    interestsSnapshot = await getDocs(queryInterests);
+
+    interestsSnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
     });
 
     console.log("Interesse removido");
@@ -282,7 +312,7 @@ const Pet = ({ route, navigation }) => {
                 <TouchableOpacity
                   onPress={() => {
                     {
-                      handleInterestPet(pet.id);
+                      handleInterestPet(pet.id, pet.userId);
                     }
                   }}
                   style={StandardButton}
