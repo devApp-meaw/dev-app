@@ -266,6 +266,7 @@ const MyPet = ({ route, navigation }) => {
               onPress={() =>
                 navigation.navigate("InterestsOnPet", {
                   interests: pet.interests,
+                  pet: pet
                 })
               }
               style={StandardButton}

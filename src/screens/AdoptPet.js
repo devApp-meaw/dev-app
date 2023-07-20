@@ -19,7 +19,10 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  onSnapshot,
+  deleteDoc,
 } from "firebase/firestore";
+import MeauNotifications from "../notifications/MeauNotifications";
 
 const AdoptPet = ({ navigation }) => {
   const { uid } = useSelector((state) => state.user.data);
@@ -44,11 +47,11 @@ const AdoptPet = ({ navigation }) => {
       collection(firestore, "animals"),
       where("interests", "array-contains", uid)
     );
-    queryInterestsSnapshot = await getDocs(queryInterests);
 
-    const interestsNow = queryInterestsSnapshot.docs.map(collectIds);
-
-    setInterests(interestsNow);
+    onSnapshot(queryInterests, (snapshot) => {
+      let interestsNow = snapshot.docs.map(collectIds);
+      setInterests(interestsNow);
+    });
   };
 
   const getPost = async () => {
@@ -59,28 +62,64 @@ const AdoptPet = ({ navigation }) => {
       where("userId", "!=", uid),
       where("adocao", "==", true)
     );
-    queryAnimalsSnapshot = await getDocs(queryAnimals);
-
-    const animals = queryAnimalsSnapshot.docs.map(collectIdsAndDocs);
-
-    setAnimals(animals);
+    onSnapshot(queryAnimals, (snapshot) => {
+      let animals = snapshot.docs.map(collectIdsAndDocs);
+      setAnimals(animals);
+    });
   };
 
   useEffect(() => {
     getPost();
   }, [isFocused]);
 
-  const handleInterestPet = async (animalId) => {
-    await updateDoc(doc(firestore, "animals", animalId), {
-      interests: arrayUnion(uid),
-    });
+  const handleInterestPet = async (animal) => {
+    animalId = animal.id;
+    ownerId = animal.userId;
+    currentUser = await firestore.collection("users").doc(uid).get();
+    console.log(currentUser.data()["fullName"]);
+
+    try {
+      await updateDoc(doc(firestore, "animals", animalId), {
+        interests: arrayUnion(uid),
+      });
+    } catch (ex) {
+      console.log("Erro ao adicionar interesse!");
+      return;
+    }
+
+    /*await firestore.collection("chat").add({
+      owner: ownerId,
+      interested: uid,
+      pet: animalId,
+      createdAt: new Date(),
+      messages: [],
+    });*/
 
     console.log("Interesse adicionado");
+
+    MeauNotifications.sendPushNotificationToUser(
+      ownerId, data={
+        title: "Novo interesse em " + animal.nome, 
+        body: "Atencao! " + currentUser.data()["fullName"] + " esta interessado(a) no seu pet!",
+        data: { animal: animal.id, interested: uid }
+      });
   };
 
   const handleUninterestPet = async (animalId) => {
     await updateDoc(doc(firestore, "animals", animalId), {
       interests: arrayRemove(uid),
+    });
+
+    const queryInterests = query(
+      collection(firestore, "chat"),
+      where("interested", "==", uid),
+      where("pet", "==", animalId)
+    );
+
+    interestsSnapshot = await getDocs(queryInterests);
+
+    interestsSnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
     });
 
     console.log("Interesse removido");
@@ -91,7 +130,9 @@ const AdoptPet = ({ navigation }) => {
       <FlatList
         data={animals}
         renderItem={({ item }) => {
+          const animal   = item;
           const animalId = item.id;
+          const ownerId = item.userId;
           const petImage =
             item.especie == "cachorro"
               ? require("../../assets/default_dog.jpg")
@@ -122,7 +163,7 @@ const AdoptPet = ({ navigation }) => {
                       <TouchableOpacity
                         style={styles.HeartIcon}
                         onPress={() => {
-                          handleInterestPet(animalId);
+                          handleInterestPet(animal);
                         }}
                       >
                         <AntDesign name="hearto" size={24} color="black" />

@@ -62,6 +62,32 @@ const createUserDocument = async (user, additionalData) => {
   }
 };
 
+const updateUserNotificationToken = async (user, newToken) => {
+  if (!user) { 
+    return;
+  }
+
+  if (!newToken) {
+    return;
+  }
+
+  const userId = user.uid;
+  console.log("Atualizando token do user id=" + userId + " token=" + newToken);
+  const userRef = firestore.doc(`users/${userId}`);
+  const snapshot = await userRef.get();
+
+  if (snapshot.exists) {
+    try {
+      var teste = snapshot.data();
+      teste.notificationToken = newToken;
+      await userRef.set(teste);
+      console.log("BORA BORA!!!");
+    } catch (error) {
+      console.log("Error in updating user", error);
+    }
+  }
+};
+
 const AddAnimal = async (form_animal) => {
   try {
     const {
@@ -141,6 +167,17 @@ const AddAnimal = async (form_animal) => {
 const GetAnimals = async () => {
   const snapshot = await firestore.collection("animals").get();
   const teste = snapshot.docs.map((doc) => doc.data());
+  return teste;
+};
+
+const getUserDocument = async (userId) => {
+  const snapshot = await firestore.doc(`users/${userId}`).get();
+  if (snapshot.exists) {
+    teste = snapshot.data();
+  } else {
+    console.log("uai");
+    teste = undefined;
+  }
   return teste;
 };
 
@@ -228,4 +265,7 @@ export {
   AddAnimal,
   GetAnimals,
   UpdateAnimal,
+  updateUserNotificationToken,
+  getUserDocument
 };
+

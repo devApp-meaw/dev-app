@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import { auth } from "../../firebase";
+import { auth, updateCurrentUserTokenOnDatabase } from "../../firebase";
 
 import { StyleSheet } from "react-native";
 import SocialLoginButton from "../components/SocialLoginButton";
 import { useDispatch } from "react-redux";
 import { changeUser } from "../redux/userSlice";
+import MeauNotifications from "../notifications/MeauNotifications";
 
 const Login = ({ navigation }) => {
   const {
@@ -31,6 +32,9 @@ const Login = ({ navigation }) => {
       .then((userCredentials) => {
         const user = userCredentials.user;
         console.log("Logged in with:", user);
+        MeauNotifications.updateCurrentUserTokenOnDatabase(user).then(function(){
+          console.log("Token de notificacao do usuario atualizado");
+        });
         dispatch(changeUser(user));
       })
       .then(() => navigation.navigate("AnimalRegistration"))

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 import { AddAnimal } from "../../firebase";
+import { firestore } from "../../firebase";
 
 import SimpleButton from "../components/SimpleButton";
 import CheckBox from "@react-native-community/checkbox";
@@ -18,6 +19,7 @@ import { Checkbox, RadioButton } from "react-native-paper";
 import { useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import * as Notifications from 'expo-notifications';
 
 const AnimalRegistration = ({ navigation }) => {
   const stateUser = useSelector((state) => state.user);
@@ -125,6 +127,48 @@ const AnimalRegistration = ({ navigation }) => {
       //console.log("deu bao");
     }
   };
+
+
+  // Lugar onde o UseEffect habilita interagir com notificaoes
+  useEffect(() => {
+
+    const notification2 = Notifications.addNotificationResponseReceivedListener(
+      response => {
+        (async () => {
+          try {
+            notificationData = response.notification.request.trigger.remoteMessage.data;
+            dataBody = notificationData.body;
+  
+            var animalId = JSON.parse(dataBody).animal;
+  
+            currentPetDb = await firestore.collection("animals").doc(animalId).get();
+
+            console.log(currentPetDb.data())
+
+            let pet = {id: animalId, interests: currentPetDb.data()["interests"]};
+    
+            console.log(pet);
+
+            navigation.navigate("InterestsOnPet", {
+              interests: pet.interests,
+              pet: pet
+            })
+  
+          } catch (except) {
+            console.log("ERRO: nao foi possivel processar notificacao.");
+            console.log(except);
+          }
+        })();
+      }
+    )
+
+    console.log("TELA ABERTA");
+
+    return () => {
+    console.log("TELA MORTA");
+      notification2.remove()
+    }
+  });
 
   const handleAddAnimal = () => {
     form_animal = {

@@ -8,6 +8,7 @@ import AnimalRegistration from "../src/screens/AnimalRegistration";
 import RegisterUser from "../src/screens/RegisterUser";
 import FrontPage from "../src/screens/FrontPage";
 import LoadingPage from "../src/screens/LoadingPage";
+import NotificationTest from "../src/screens/NotificationTest";
 import MyPets from "../src/screens/MyPets";
 import AdoptPet from "../src/screens/AdoptPet";
 import { Logout } from "../src/screens/Logout";
@@ -24,6 +25,7 @@ import EditPet from "../src/screens/EditPet";
 import AnimalUpdateSuccess from "../src/screens/AnimalUpdateSuccess";
 import Favorites from "../src/screens/Favorites";
 import Pet from "../src/screens/Pet";
+import ChatTab from "../src/screens/ChatTab";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -31,13 +33,14 @@ const Stack = createStackNavigator();
 const DrawerNavigator = () => {
   const user = useSelector((state) => state.user);
   return (
-    <Drawer.Navigator
-      initialRouteName="FrontPage"
-      screenOptions={{
-        drawerPosition: "left",
-      }}
-      drawerContent={(props) => <Logout {...props} />}
-    >
+      <Drawer.Navigator
+        initialRouteName='FrontPage'
+        screenOptions={{
+          drawerPosition: "left",
+        }}
+        drawerContent={(props) => <Logout {...props} />}
+      >
+
       {user.isLogged ? (
         <>
           <Drawer.Screen
@@ -391,6 +394,28 @@ const StackNavigator = () => {
             fontSize: 20,
           },
         }}
+      />
+      <Stack.Screen
+        name="ChatTab"
+        component={ChatTab}
+        options={({ route }) => ({
+          title: route.params.chatTab.userName,
+          headerStyle: {
+            backgroundColor: "#88c9bf",
+          },
+          headerTintColor: "#434343",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerRight: () => (
+            <Ionicons
+              style={{ marginRight: 15, color: "#434343" }}
+              name="share-social"
+              size={24}
+              color="black"
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );
