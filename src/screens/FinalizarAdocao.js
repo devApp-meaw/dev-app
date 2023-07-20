@@ -236,7 +236,7 @@ const FinalizarAdocao = ({ navigation }) => {
                     }}
                   />
                   <Text style={styles.CheckboxText}>
-                    {detailedUsers[item].fullName}
+                    {detailedUsers[item.id].fullName}
                   </Text>
                 </View>
               );
