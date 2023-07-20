@@ -39,23 +39,6 @@ const DrawerNavigator = () => {
         }}
         drawerContent={(props) => <Logout {...props} />}
       >
-      
-      <Drawer.Screen
-        name="NotificationTest"
-        component={NotificationTest}
-        options={{
-          title: "Teste de Notificacoes",
-          headerShadowVisible: true,
-          headerTitleAlign: "left",
-          headerStyle: {
-            backgroundColor: "#ffd358",
-          },
-          headerTintColor: "#434343",
-          headerTitleStyle: {
-            fontSize: 20,
-          },
-        }}
-      />
 
       {user.isLogged ? (
         <>
