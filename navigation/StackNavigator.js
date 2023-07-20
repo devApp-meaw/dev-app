@@ -24,6 +24,7 @@ import EditPet from "../src/screens/EditPet";
 import AnimalUpdateSuccess from "../src/screens/AnimalUpdateSuccess";
 import Favorites from "../src/screens/Favorites";
 import Pet from "../src/screens/Pet";
+import AnimalRegistrationForm from "../src/screens/AnimalRegistration/AnimalRegistrationForm";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -32,7 +33,7 @@ const DrawerNavigator = () => {
   const user = useSelector((state) => state.user);
   return (
     <Drawer.Navigator
-      initialRouteName="FrontPage"
+      initialRouteName='FrontPage'
       screenOptions={{
         drawerPosition: "left",
       }}
@@ -41,7 +42,7 @@ const DrawerNavigator = () => {
       {user.isLogged ? (
         <>
           <Drawer.Screen
-            name="AnimalRegistration"
+            name='AnimalRegistration'
             component={AnimalRegistration}
             options={{
               title: "Cadastro do Animal",
@@ -57,7 +58,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="MyPets"
+            name='MyPets'
             component={MyPets}
             options={{
               title: "Meus Pets",
@@ -73,15 +74,15 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
           />
           <Drawer.Screen
-            name="AdoptPet"
+            name='AdoptPet'
             component={AdoptPet}
             options={{
               title: "Adotar",
@@ -97,15 +98,39 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
           />
           <Drawer.Screen
-            name="Favorites"
+            name='AnimalRegistrationForm'
+            component={AnimalRegistrationForm}
+            options={{
+              title: "AnimalRegistrationForm",
+              headerShadowVisible: true,
+              headerTitleAlign: "left",
+              headerStyle: {
+                backgroundColor: "#ffd358",
+              },
+              headerTintColor: "#434343",
+              headerTitleStyle: {
+                fontSize: 20,
+              },
+              headerRight: () => (
+                <AntDesign
+                  style={{ marginRight: 15 }}
+                  name='search1'
+                  size={24}
+                  color='black'
+                />
+              ),
+            }}
+          />
+          <Drawer.Screen
+            name='Favorites'
             component={Favorites}
             options={{
               title: "Favoritos",
@@ -121,15 +146,15 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
           />
           <Drawer.Screen
-            name="Chat"
+            name='Chat'
             component={Chat}
             options={{
               title: "Chat",
@@ -145,9 +170,9 @@ const DrawerNavigator = () => {
               headerRight: () => (
                 <AntDesign
                   style={{ marginRight: 15 }}
-                  name="search1"
+                  name='search1'
                   size={24}
-                  color="black"
+                  color='black'
                 />
               ),
             }}
@@ -156,7 +181,7 @@ const DrawerNavigator = () => {
       ) : (
         <>
           <Drawer.Screen
-            name="LoadingPage"
+            name='LoadingPage'
             component={LoadingPage}
             options={{
               title: "Loading",
@@ -174,7 +199,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="FrontPage"
+            name='FrontPage'
             component={FrontPage}
             options={{
               title: "Início",
@@ -191,7 +216,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="Login"
+            name='Login'
             component={Login}
             options={{
               title: "Login",
@@ -207,7 +232,7 @@ const DrawerNavigator = () => {
             }}
           />
           <Drawer.Screen
-            name="RegisterUser"
+            name='RegisterUser'
             component={RegisterUser}
             options={{
               title: "Cadastro Pessoal",
@@ -236,12 +261,12 @@ const StackNavigator = () => {
       }}
     >
       <Stack.Screen
-        name="DrawerNavigator"
+        name='DrawerNavigator'
         component={DrawerNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="AnimalRegistrationSuccess"
+        name='AnimalRegistrationSuccess'
         component={AnimalRegistrationSuccess}
         options={{
           title: "Cadastro do animal",
@@ -255,7 +280,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="AnimalUpdateSuccess"
+        name='AnimalUpdateSuccess'
         component={AnimalUpdateSuccess}
         options={{
           title: "Atualização do animal",
@@ -269,7 +294,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="OpsCadastro"
+        name='OpsCadastro'
         component={OpsCadastro}
         options={{
           title: "Cadastro",
@@ -283,7 +308,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="MyPet"
+        name='MyPet'
         component={MyPet}
         options={({ route }) => ({
           title: route.params.pet.nome,
@@ -297,15 +322,15 @@ const StackNavigator = () => {
           headerRight: () => (
             <Ionicons
               style={{ marginRight: 15, color: "#434343" }}
-              name="share-social"
+              name='share-social'
               size={24}
-              color="black"
+              color='black'
             />
           ),
         })}
       />
       <Stack.Screen
-        name="Pet"
+        name='Pet'
         component={Pet}
         options={({ route }) => ({
           title: route.params.pet.nome,
@@ -319,15 +344,15 @@ const StackNavigator = () => {
           headerRight: () => (
             <Ionicons
               style={{ marginRight: 15, color: "#434343" }}
-              name="share-social"
+              name='share-social'
               size={24}
-              color="black"
+              color='black'
             />
           ),
         })}
       />
       <Stack.Screen
-        name="InterestsOnPet"
+        name='InterestsOnPet'
         component={InterestsOnPet}
         options={({ route }) => ({
           title: "Interessados",
@@ -341,15 +366,15 @@ const StackNavigator = () => {
           headerRight: () => (
             <AntDesign
               style={{ marginRight: 15 }}
-              name="search1"
+              name='search1'
               size={24}
-              color="black"
+              color='black'
             />
           ),
         })}
       />
       <Stack.Screen
-        name="FinalizarAdocao"
+        name='FinalizarAdocao'
         component={FinalizarAdocao}
         options={{
           title: "Finalizar adoção",
@@ -363,7 +388,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="ProcessoFinalizado"
+        name='ProcessoFinalizado'
         component={ProcessoFinalizado}
         options={{
           title: "Finalizar processo",
@@ -377,7 +402,7 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="EditPet"
+        name='EditPet'
         component={EditPet}
         options={{
           title: "Editar animal",
